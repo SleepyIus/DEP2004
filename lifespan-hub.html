@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6d28d9">
+  <meta name="apple-mobile-web-app-title" content="Lifespan">
+  <title>Elevated · Lifespan — Human Development Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       CSS VARIABLES — DARK MODE DEFAULT
+       ============================================================ */
+    :root {
+      /* Backgrounds */
+      --bg: #0f1117;
+      --surface: #181c27;
+      --surface2: #1e2336;
+      --surface3: #242a40;
+
+      /* Borders */
+      --border: #2a3050;
+      --border-soft: rgba(255,255,255,0.06);
+
+      /* Subject accent — Lifespan: deep violet */
+      --accent: #7c3aed;
+      --accent2: #8b5cf6;
+      --accent-soft: rgba(124,58,237,0.14);
+      --accent-stripe-bg: rgba(124,58,237,0.25);
+
+      /* Text */
+      --text: #e8eaf2;
+      --text2: #8b92b8;
+      --text3: #555e85;
+
+      /* Status colors (kept for cross-file consistency with the suite) */
+      --reassuring: #3db87a;
+      --reassuring-bg: rgba(61,184,122,0.10);
+      --indeterminate: #e8a838;
+      --indeterminate-bg: rgba(232,168,56,0.10);
+      --nonreassuring: #e05c6a;
+      --nonreassuring-bg: rgba(224,92,106,0.10);
+
+      /* Mid-prompt accent colors (CONTENT/JUDGMENT/PRINCIPLE/PRIORITY) */
+      --prompt-content: #4fa3e0;
+      --prompt-content-bg: rgba(79,163,224,0.10);
+      --prompt-judgment: #a78bfa;
+      --prompt-judgment-bg: rgba(167,139,250,0.10);
+      --prompt-principle: #14b8a6;
+      --prompt-principle-bg: rgba(20,184,166,0.10);
+      --prompt-priority: #ef4444;
+      --prompt-priority-bg: rgba(239,68,68,0.10);
+
+      --nav-bg: rgba(15,17,23,0.92);
+      --shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    [data-theme="light"] {
+      --bg: #faf7f2;
+      --surface: #f4f0e8;
+      --surface2: #ece6d8;
+      --surface3: #e3dccc;
+      --border: #d6ccb8;
+      --border-soft: rgba(0,0,0,0.07);
+
+      /* Light-mode accent — deeper violet for contrast on cream */
+      --accent: #6d28d9;
+      --accent2: #5b21b6;
+      --accent-soft: rgba(109,40,217,0.10);
+      --accent-stripe-bg: rgba(109,40,217,0.20);
+
+      --text: #1e1c18;
+      --text2: #5a5448;
+      --text3: #9e9080;
+
+      --reassuring: #1a9157;
+      --reassuring-bg: rgba(26,145,87,0.10);
+      --indeterminate: #b87418;
+      --indeterminate-bg: rgba(184,116,24,0.10);
+      --nonreassuring: #c0384a;
+      --nonreassuring-bg: rgba(192,56,74,0.10);
+
+      --nav-bg: rgba(250,247,242,0.92);
+      --shadow: 0 8px 24px rgba(0,0,0,0.10);
+    }
+
+    /* ============================================================
+       BASE
+       ============================================================ */
+    * { box-sizing: border-box; }
+    html { font-size: 15px; }
+    body {
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.25s, color 0.25s;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 32px 80px;
+    }
+    @media (max-width: 700px) {
+      .page { padding: 16px 18px 60px; }
+    }
+
+    /* ============================================================
+       PAGE HEADER (theme toggle)
+       ============================================================ */
+    .page-header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 6px 0 0;
+    }
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero {
+      margin-top: 24px;
+      padding: 32px 0 24px;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 48px;
+      font-weight: 400;
+      line-height: 1.05;
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-sub {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text2);
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 36px; }
+      .hero-sub { font-size: 14px; }
+    }
+
+    /* ============================================================
+       STATS ROW (3 stats — Chapters / Units / Starter Cards)
+       ============================================================ */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 24px 0;
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    .stat { text-align: center; padding: 8px; }
+    .stat-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text2);
+    }
+    @media (max-width: 480px) {
+      .stats { grid-template-columns: 1fr; gap: 8px; padding: 18px; }
+    }
+
+    /* ============================================================
+       PICKUP PANEL
+       ============================================================ */
+    .pickup-panel {
+      background: linear-gradient(135deg, var(--accent-soft), transparent);
+      border: 1px solid var(--accent);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+    .pickup-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .pickup-head h3 {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin: 0;
+    }
+    .pickup-dismiss {
+      background: transparent;
+      border: none;
+      color: var(--text3);
+      font-size: 22px;
+      cursor: pointer;
+      padding: 0 8px;
+      line-height: 1;
+    }
+    .pickup-dismiss:hover { color: var(--text); }
+    .pickup-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .pickup-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all .15s;
+    }
+    .pickup-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .pickup-icon { font-size: 28px; flex-shrink: 0; }
+    .pickup-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text3);
+      margin-bottom: 2px;
+    }
+    .pickup-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* ============================================================
+       PRIMARY GRID (2 tool cards — Book + Flashcards)
+       ============================================================ */
+    .primary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .tool-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .tool-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transform: translateY(-2px);
+    }
+    .tool-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+    .tool-card h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 26px;
+      font-weight: 400;
+      margin: 0;
+    }
+    .tool-desc {
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.55;
+      margin: 0;
+      flex: 1;
+    }
+    .tool-meta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--text3);
+    }
+    .tool-meta-item strong { color: var(--text); }
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      flex: 1;
+      height: 6px;
+      background: var(--surface3);
+      border-radius: 99px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-fill-partial {
+      position: absolute; top: 0; left: 0;
+      height: 100%;
+      background-image: repeating-linear-gradient(
+        45deg,
+        var(--accent) 0,
+        var(--accent) 2px,
+        transparent 2px,
+        transparent 6px
+      );
+      border-radius: 99px;
+      transition: width .25s;
+    }
+    .progress-fill {
+      position: absolute; top: 0; left: 0;
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      transition: width .25s;
+    }
+    .progress-text {
+      font-size: 11px;
+      color: var(--text3);
+      white-space: nowrap;
+    }
+    .tool-cta {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-top: 8px;
+    }
+    @media (max-width: 800px) {
+      .primary-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       UNITS GRID
+       ============================================================ */
+    .units-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text2);
+      margin: 32px 0 12px;
+    }
+    .units-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 0 0 24px;
+    }
+    .unit-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all .15s;
+    }
+    .unit-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .unit-num {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .unit-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px;
+      font-weight: 400;
+      margin: 0 0 4px;
+      line-height: 1.2;
+    }
+    .unit-range {
+      font-size: 12px;
+      color: var(--text3);
+      margin-bottom: 12px;
+    }
+    .unit-progress-bar {
+      height: 4px;
+      background: var(--surface3);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 4px;
+      position: relative;
+    }
+    .unit-progress-fill-partial {
+      position: absolute; top: 0; left: 0;
+      height: 100%;
+      background-image: repeating-linear-gradient(
+        45deg,
+        var(--accent) 0,
+        var(--accent) 2px,
+        transparent 2px,
+        transparent 6px
+      );
+      border-radius: 99px;
+      width: 0%;
+      transition: width .25s;
+    }
+    .unit-progress-fill {
+      position: absolute; top: 0; left: 0;
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      width: 0%;
+      transition: width .25s;
+    }
+    .unit-progress-text {
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    /* ============================================================
+       FUTURE CARD
+       ============================================================ */
+    .future-card {
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin: 24px 0;
+    }
+    .future-card h3 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text2);
+      margin: 0 0 10px;
+    }
+    .future-list {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 13px;
+      color: var(--text3);
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       STORAGE PANEL
+       ============================================================ */
+    .storage-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 32px 0 20px;
+      overflow: hidden;
+    }
+    .storage-panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .storage-panel-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text2);
+      margin: 0;
+    }
+    .storage-panel-caret {
+      font-size: 14px;
+      color: var(--text3);
+      transition: transform .2s;
+    }
+    .storage-panel.open .storage-panel-caret { transform: rotate(90deg); }
+    .storage-panel-body {
+      display: none;
+      padding: 0 18px 18px;
+      border-top: 1px solid var(--border-soft);
+    }
+    .storage-panel.open .storage-panel-body { display: block; }
+    .storage-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 14px 0;
+    }
+    .storage-btn {
+      padding: 8px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: inherit;
+      transition: all .15s;
+    }
+    .storage-btn:hover { border-color: var(--accent); }
+    .storage-btn.danger:hover {
+      border-color: var(--nonreassuring);
+      color: var(--nonreassuring);
+    }
+    .storage-status {
+      font-size: 12px;
+      color: var(--text3);
+      margin: 8px 0;
+    }
+    .storage-keys-list {
+      margin-top: 12px;
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 11px;
+      color: var(--text3);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-soft);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text3);
+      line-height: 1.7;
+    }
+    .footer p { margin: 4px 0; }
+  </style>
+</head>
+<body>
+
+  <main class="page">
+
+    <!-- PAGE HEADER (theme toggle) -->
+    <header class="page-header">
+      <button class="theme-toggle" id="themeToggle" type="button">
+        <span id="themeIcon">☀️</span><span id="themeLabel">Light Mode</span>
+      </button>
+    </header>
+
+    <!-- 1. HERO -->
+    <section class="hero">
+      <div class="hero-eyebrow">Elevated · Lifespan Companion</div>
+      <h1>Human <em>Development</em><br>A Life-Span View</h1>
+      <p class="hero-sub">
+        A chapter-by-chapter companion to Kail &amp; Cavanaugh's <em>Human Development:
+        A Life-Span View</em> (9th ed.). Built for focused reading, active recall,
+        and exam preparation across the full span of human life.
+      </p>
+    </section>
+
+    <!-- 2. STATS -->
+    <section class="stats">
+      <div class="stat"><div class="stat-value">16</div><div class="stat-label">Chapters</div></div>
+      <div class="stat"><div class="stat-value">4</div><div class="stat-label">Units</div></div>
+      <div class="stat"><div class="stat-value" id="starterStat">763</div><div class="stat-label">Starter Cards</div></div>
+    </section>
+
+    <!-- 3. PICKUP PANEL -->
+    <section class="pickup-panel" id="pickupPanel" hidden>
+      <div class="pickup-head">
+        <h3>▶ Pick up where you left off</h3>
+        <button class="pickup-dismiss" id="pickupDismiss" type="button" title="Hide this panel">×</button>
+      </div>
+      <div class="pickup-cards">
+        <a class="pickup-card" id="pickupBook" href="#" hidden>
+          <div class="pickup-icon">📖</div>
+          <div class="pickup-text">
+            <div class="pickup-label">Continue reading</div>
+            <div class="pickup-value" id="pickupBookValue">—</div>
+          </div>
+        </a>
+        <a class="pickup-card" id="pickupFc" href="lifespan-flashcards.html" hidden>
+          <div class="pickup-icon">🃏</div>
+          <div class="pickup-text">
+            <div class="pickup-label">Review queue</div>
+            <div class="pickup-value" id="pickupFcValue">—</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 4. PRIMARY GRID -->
+    <section class="primary-grid">
+      <a class="tool-card" href="lifespan-book.html">
+        <div class="tool-eyebrow">Reference · 16 chapters</div>
+        <h2>Chapter Book</h2>
+        <p class="tool-desc">
+          Full chapter content from <em>Human Development: A Life-Span View</em>
+          — from prenatal development through dying and bereavement. Each chapter has a
+          TL;DR, content sections, embedded mid-read prompts, real-people cases,
+          a Spotlight on Research highlight, and exercises.
+        </p>
+        <div class="tool-meta">
+          <span class="tool-meta-item"><strong>4</strong> units</span>
+          <span class="tool-meta-item"><strong>16</strong> chapters</span>
+        </div>
+        <div class="progress-row">
+          <div class="progress-bar">
+            <div class="progress-fill-partial" id="bookProgressPartial"></div>
+            <div class="progress-fill" id="bookProgress"></div>
+          </div>
+          <div class="progress-text" id="bookProgressText">0 / 16 read</div>
+        </div>
+        <div class="tool-cta">Open chapter book →</div>
+      </a>
+
+      <a class="tool-card" href="lifespan-flashcards.html">
+        <div class="tool-eyebrow">Active recall · SM-2 spaced</div>
+        <h2>Flashcards</h2>
+        <p class="tool-desc">
+          Spaced-repetition review of every key term, mid-read prompt, and concept
+          you've rated. Cards return on the SM-2 schedule — hard cards come back
+          sooner, easy ones spread out.
+        </p>
+        <div class="tool-meta">
+          <span class="tool-meta-item"><strong>SM-2</strong> algorithm</span>
+          <span class="tool-meta-item"><strong id="fcStarterMeta">763</strong> starter cards</span>
+        </div>
+        <div class="progress-row">
+          <div class="progress-bar"><div class="progress-fill" id="fcProgress"></div></div>
+          <div class="progress-text" id="fcProgressText">763 ready</div>
+        </div>
+        <div class="tool-cta">Start review →</div>
+      </a>
+    </section>
+
+    <!-- 5. UNITS GRID -->
+    <h2 class="units-section-title">Units</h2>
+    <section class="units-grid">
+      <a class="unit-card" href="lifespan-book.html#ch1" data-unit="unit1">
+        <div class="unit-num">Unit 1</div>
+        <h3>Foundations &amp; Early Childhood</h3>
+        <div class="unit-range">Ch 1 – 5</div>
+        <div class="unit-progress">
+          <div class="unit-progress-bar"><div class="unit-progress-fill-partial" data-unit-bar-partial="unit1"></div><div class="unit-progress-fill" data-unit-bar="unit1"></div></div>
+          <div class="unit-progress-text" data-unit-text="unit1">0 / 5 read</div>
+        </div>
+      </a>
+      <a class="unit-card" href="lifespan-book.html#ch6" data-unit="unit2">
+        <div class="unit-num">Unit 2</div>
+        <h3>School-Age &amp; Adolescence</h3>
+        <div class="unit-range">Ch 6 – 9</div>
+        <div class="unit-progress">
+          <div class="unit-progress-bar"><div class="unit-progress-fill-partial" data-unit-bar-partial="unit2"></div><div class="unit-progress-fill" data-unit-bar="unit2"></div></div>
+          <div class="unit-progress-text" data-unit-text="unit2">0 / 4 read</div>
+        </div>
+      </a>
+      <a class="unit-card" href="lifespan-book.html#ch10" data-unit="unit3">
+        <div class="unit-num">Unit 3</div>
+        <h3>Young &amp; Middle Adulthood</h3>
+        <div class="unit-range">Ch 10 – 13</div>
+        <div class="unit-progress">
+          <div class="unit-progress-bar"><div class="unit-progress-fill-partial" data-unit-bar-partial="unit3"></div><div class="unit-progress-fill" data-unit-bar="unit3"></div></div>
+          <div class="unit-progress-text" data-unit-text="unit3">0 / 4 read</div>
+        </div>
+      </a>
+      <a class="unit-card" href="lifespan-book.html#ch14" data-unit="unit4">
+        <div class="unit-num">Unit 4</div>
+        <h3>Late Adulthood &amp; Dying</h3>
+        <div class="unit-range">Ch 14 – 16</div>
+        <div class="unit-progress">
+          <div class="unit-progress-bar"><div class="unit-progress-fill-partial" data-unit-bar-partial="unit4"></div><div class="unit-progress-fill" data-unit-bar="unit4"></div></div>
+          <div class="unit-progress-text" data-unit-text="unit4">0 / 3 read</div>
+        </div>
+      </a>
+    </section>
+
+    <!-- 6. FUTURE CARD -->
+    <div class="future-card">
+      <h3>Planned additions</h3>
+      <ul class="future-list">
+        <li>All 16 chapters with TL;DRs, mid-read prompts, and exercises</li>
+        <li>Spotlight on Research and Real People cases as in-modal tabs</li>
+        <li>Key Terms flashcards across all chapters</li>
+        <li>Search across chapter content</li>
+        <li>Bookmarks and reading progress tracking</li>
+      </ul>
+    </div>
+
+    <!-- 7. STORAGE PANEL -->
+    <div class="storage-panel" id="storagePanel">
+      <div class="storage-panel-head" id="storagePanelHead">
+        <h3 class="storage-panel-title">Sync &amp; storage</h3>
+        <span class="storage-panel-caret">▸</span>
+      </div>
+      <div class="storage-panel-body">
+        <div class="storage-actions">
+          <button class="storage-btn" id="exportBtn" type="button">⬇ Export backup</button>
+          <button class="storage-btn" id="importBtn" type="button">⬆ Import backup</button>
+          <button class="storage-btn danger" id="resetBtn" type="button">⌫ Reset all progress</button>
+          <input type="file" id="importFile" accept="application/json" style="display:none">
+        </div>
+        <div class="storage-status" id="storageStatus">Click a button to manage your local data.</div>
+        <div class="storage-keys-list" id="storageKeysList"></div>
+      </div>
+    </div>
+
+    <!-- 8. FOOTER -->
+    <footer class="footer">
+      <p>Elevated · Lifespan Companion · Human Development: A Life-Span View (Kail &amp; Cavanaugh, 9th ed.)</p>
+      <p>Personal study tool — not affiliated with the publisher.</p>
+    </footer>
+
+  </main>
+
+  <script>
+    (function() {
+      'use strict';
+
+      /* ============================================================
+         STORAGE KEY CONSTANTS
+         ============================================================ */
+      var THEME_KEY          = 'lifespan_theme';
+      var LAST_CH_KEY_HUB    = 'lifespan_last_chapter';
+      var PICKUP_DISMISS_KEY = 'lifespan_pickup_dismissed';
+      var BOOK_KEY           = 'lifespan_book_progress';
+      var FC_KEY             = 'lifespan_fc_schedule';
+
+      // SYNC_KEYS — the safety whitelist used by export/import/reset.
+      // Add new keys here as other files (Book, Flashcards) introduce them.
+      var SYNC_KEYS = [
+        'lifespan_book_progress',
+        'lifespan_fc_schedule',
+        'lifespan_bookmarks',
+        'lifespan_theme'
+      ];
+
+      /* ============================================================
+         THEME
+         ============================================================ */
+      var themeToggle = document.getElementById('themeToggle');
+      var themeIcon   = document.getElementById('themeIcon');
+      var themeLabel  = document.getElementById('themeLabel');
+
+      function applyThemeUI() {
+        var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        if (themeIcon)  themeIcon.textContent  = isLight ? '🌙' : '☀️';
+        if (themeLabel) themeLabel.textContent = isLight ? 'Dark Mode' : 'Light Mode';
+      }
+
+      // Apply saved theme on load (with salvage migration from any old keys, in case
+      // the user later renames this build's namespace)
+      (function() {
+        try {
+          var saved = localStorage.getItem(THEME_KEY);
+          if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+        } catch(e) {}
+        applyThemeUI();
+      })();
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+          var next = isLight ? 'dark' : 'light';
+          if (next === 'dark') document.documentElement.removeAttribute('data-theme');
+          else document.documentElement.setAttribute('data-theme', 'light');
+          try { localStorage.setItem(THEME_KEY, next); } catch(e) {}
+          applyThemeUI();
+        });
+      }
+
+      /* ============================================================
+         UTILITIES
+         ============================================================ */
+      function loadJson(key) {
+        try {
+          var raw = localStorage.getItem(key);
+          return raw ? JSON.parse(raw) : null;
+        } catch(e) { return null; }
+      }
+
+      function countProgress(progressObj) {
+        if (!progressObj) return { done: 0, partial: 0 };
+        var done = 0, partial = 0;
+        for (var k in progressObj) {
+          if (!Object.prototype.hasOwnProperty.call(progressObj, k)) continue;
+          if (progressObj[k] >= 2) done++;
+          else if (progressObj[k] === 1) partial++;
+        }
+        return { done: done, partial: partial };
+      }
+
+      function countDueCards() {
+        var schedule = loadJson(FC_KEY) || {};
+        var now = Date.now();
+        var due = 0, scheduled = 0;
+        for (var k in schedule) {
+          if (!schedule[k] || !schedule[k].nextReview) continue;
+          scheduled++;
+          if (new Date(schedule[k].nextReview).getTime() <= now) due++;
+        }
+        return { due: due, scheduled: scheduled };
+      }
+
+      /* ============================================================
+         PROGRESS UI — Book card + unit cards
+         ============================================================ */
+      var CHAPTER_COUNT = 16;
+      var UNIT_RANGES = {
+        unit1: { from: 1,  to: 5  },
+        unit2: { from: 6,  to: 9  },
+        unit3: { from: 10, to: 13 },
+        unit4: { from: 14, to: 16 }
+      };
+
+      function updateProgressUI() {
+        var bookProgress = loadJson(BOOK_KEY) || {};
+        var totals = countProgress(bookProgress);
+
+        // Book tool card — solid for done, hatched stripes for in-progress
+        var bookBar     = document.getElementById('bookProgress');
+        var bookBarPart = document.getElementById('bookProgressPartial');
+        var bookText    = document.getElementById('bookProgressText');
+        if (bookBar)     bookBar.style.width     = (totals.done / CHAPTER_COUNT * 100) + '%';
+        if (bookBarPart) bookBarPart.style.width = ((totals.done + totals.partial) / CHAPTER_COUNT * 100) + '%';
+        if (bookText)    bookText.textContent    = totals.done + ' / ' + CHAPTER_COUNT + ' read';
+
+        // Flashcards card
+        var fcStats = countDueCards();
+        var fcBar  = document.getElementById('fcProgress');
+        var fcText = document.getElementById('fcProgressText');
+        if (fcBar)  fcBar.style.width = fcStats.scheduled > 0
+                      ? Math.max(0, (1 - fcStats.due / fcStats.scheduled) * 100) + '%'
+                      : '0%';
+        if (fcText) fcText.textContent = fcStats.due > 0
+                      ? (fcStats.due + ' due now')
+                      : (fcStats.scheduled > 0 ? 'All caught up' : '763 ready');
+
+        // Starter Cards stat + tool-meta
+        var TOTAL_DECK_SIZE = 763;
+        var starterStat = document.getElementById('starterStat');
+        var fcStarter   = document.getElementById('fcStarterMeta');
+        var starterCount = fcStats.scheduled > 0
+          ? (fcStats.scheduled + ' / ' + TOTAL_DECK_SIZE)
+          : String(TOTAL_DECK_SIZE);
+        if (starterStat) starterStat.textContent = starterCount;
+        if (fcStarter)   fcStarter.textContent   = starterCount;
+
+        // Per-unit progress — solid + hatched
+        Object.keys(UNIT_RANGES).forEach(function(unit) {
+          var range = UNIT_RANGES[unit];
+          var total = range.to - range.from + 1;
+          var done  = 0, partial = 0;
+          for (var n = range.from; n <= range.to; n++) {
+            var v = bookProgress['ch' + n] || 0;
+            if (v >= 2)      done++;
+            else if (v === 1) partial++;
+          }
+          var bar     = document.querySelector('[data-unit-bar="'         + unit + '"]');
+          var barPart = document.querySelector('[data-unit-bar-partial="' + unit + '"]');
+          var text    = document.querySelector('[data-unit-text="'        + unit + '"]');
+          if (bar)     bar.style.width     = (done / total * 100) + '%';
+          if (barPart) barPart.style.width = ((done + partial) / total * 100) + '%';
+          if (text)    text.textContent    = done + ' / ' + total + ' read';
+        });
+      }
+
+      /* ============================================================
+         PICKUP PANEL
+         ============================================================ */
+      function updatePickupPanel() {
+        var panel = document.getElementById('pickupPanel');
+        if (!panel) return;
+
+        try {
+          if (sessionStorage.getItem(PICKUP_DISMISS_KEY) === '1') {
+            panel.hidden = true;
+            return;
+          }
+        } catch(e) {}
+
+        var fcStats = countDueCards();
+        var lastCh  = loadJson(LAST_CH_KEY_HUB);
+
+        var hasAny = false;
+
+        // Book card
+        var bookCard  = document.getElementById('pickupBook');
+        var bookValue = document.getElementById('pickupBookValue');
+        if (lastCh && lastCh.id && lastCh.name) {
+          bookCard.href = 'lifespan-book.html#' + lastCh.id;
+          bookValue.textContent = 'Ch ' + lastCh.id.replace('ch', '') + ': ' + lastCh.name;
+          bookCard.hidden = false;
+          hasAny = true;
+        } else {
+          bookCard.hidden = true;
+        }
+
+        // Flashcards card
+        var fcCard  = document.getElementById('pickupFc');
+        var fcValue = document.getElementById('pickupFcValue');
+        if (fcStats.scheduled > 0) {
+          if (fcStats.due > 0) {
+            fcValue.textContent = fcStats.due + ' card' + (fcStats.due === 1 ? '' : 's') + ' due now';
+          } else {
+            fcValue.textContent = 'All caught up · ' + fcStats.scheduled + ' in deck';
+          }
+          fcCard.hidden = false;
+          hasAny = true;
+        } else {
+          fcCard.hidden = true;
+        }
+
+        panel.hidden = !hasAny;
+
+        // Dismiss (idempotent via _wired guard)
+        var dismiss = document.getElementById('pickupDismiss');
+        if (dismiss && !dismiss._wired) {
+          dismiss._wired = true;
+          dismiss.addEventListener('click', function() {
+            try { sessionStorage.setItem(PICKUP_DISMISS_KEY, '1'); } catch(e) {}
+            panel.hidden = true;
+          });
+        }
+      }
+
+      /* ============================================================
+         STORAGE PANEL
+         ============================================================ */
+      var storagePanel     = document.getElementById('storagePanel');
+      var storagePanelHead = document.getElementById('storagePanelHead');
+      var keysList         = document.getElementById('storageKeysList');
+      var status           = document.getElementById('storageStatus');
+
+      function renderKeysList() {
+        if (!keysList) return;
+        var html = '';
+        SYNC_KEYS.forEach(function(k) {
+          var v;
+          try { v = localStorage.getItem(k); } catch(e) { v = null; }
+          var size = v ? new Blob([v]).size : 0;
+          var bytes = size < 1024 ? size + ' B' : (size / 1024).toFixed(1) + ' KB';
+          html += '<span>' + k + ' · ' + (v ? bytes : 'empty') + '</span>';
+        });
+        keysList.innerHTML = html;
+      }
+
+      if (storagePanelHead) {
+        storagePanelHead.addEventListener('click', function() {
+          storagePanel.classList.toggle('open');
+          if (storagePanel.classList.contains('open')) renderKeysList();
+        });
+      }
+
+      // Export
+      var exportBtn = document.getElementById('exportBtn');
+      if (exportBtn) {
+        exportBtn.addEventListener('click', function() {
+          try {
+            var backup = { _meta: { source: 'Elevated Lifespan hub', exportedAt: new Date().toISOString() } };
+            SYNC_KEYS.forEach(function(k) {
+              var v = localStorage.getItem(k);
+              try { backup[k] = v ? JSON.parse(v) : null; }
+              catch(e) { backup[k] = v; }   // preserve raw string for non-JSON values (e.g. theme = 'light')
+            });
+            var blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            var url  = URL.createObjectURL(blob);
+            var a    = document.createElement('a');
+            a.href = url;
+            a.download = 'lifespan-backup-' + new Date().toISOString().slice(0,10) + '.json';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            if (status) status.textContent = '✓ Backup downloaded.';
+          } catch(err) {
+            if (status) status.textContent = '✗ Export failed: ' + err.message;
+          }
+        });
+      }
+
+      // Import
+      var importBtn  = document.getElementById('importBtn');
+      var importFile = document.getElementById('importFile');
+      if (importBtn && importFile) {
+        importBtn.addEventListener('click', function() { importFile.click(); });
+        importFile.addEventListener('change', function(e) {
+          var file = e.target.files[0];
+          if (!file) return;
+          var reader = new FileReader();
+          reader.onload = function(ev) {
+            try {
+              var backup = JSON.parse(ev.target.result);
+              var restored = 0;
+              SYNC_KEYS.forEach(function(k) {
+                if (backup[k] !== undefined && backup[k] !== null) {
+                  localStorage.setItem(
+                    k,
+                    typeof backup[k] === 'string' ? backup[k] : JSON.stringify(backup[k])
+                  );
+                  restored++;
+                }
+              });
+              if (status) status.textContent = '✓ Restored ' + restored + ' key(s) from backup.';
+              updateProgressUI();
+              updatePickupPanel();
+              renderKeysList();
+            } catch(err) {
+              if (status) status.textContent = '✗ Import failed: ' + err.message;
+            }
+          };
+          reader.readAsText(file);
+          importFile.value = '';   // allow re-selecting the same file
+        });
+      }
+
+      // Reset
+      var resetBtn = document.getElementById('resetBtn');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', function() {
+          if (!confirm('Reset ALL Lifespan progress? This cannot be undone.')) return;
+          SYNC_KEYS.forEach(function(k) {
+            if (k !== THEME_KEY) {
+              try { localStorage.removeItem(k); } catch(e) {}
+            }
+          });
+          if (status) status.textContent = '✓ All progress reset.';
+          updateProgressUI();
+          updatePickupPanel();
+          renderKeysList();
+        });
+      }
+
+      /* ============================================================
+         INIT
+         ============================================================ */
+      updateProgressUI();
+      updatePickupPanel();
+    })();
+  </script>
+</body>
+</html>
