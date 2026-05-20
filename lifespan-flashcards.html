@@ -7521,8 +7521,32 @@
           return raw ? JSON.parse(raw) : {};
         } catch(e) { return {}; }
       }
+      // Batch 2: merge two schedules, keeping the newer card per id (by lastRated).
+      // Cards present in only one side survive. Protects against one tab's save
+      // clobbering another tab's concurrent rating.
+      function mergeSchedules(current, incoming) {
+        var out = {}, ids = {};
+        Object.keys(current || {}).forEach(function(k){ ids[k] = true; });
+        Object.keys(incoming || {}).forEach(function(k){ ids[k] = true; });
+        Object.keys(ids).forEach(function(id) {
+          var a = current ? current[id] : null;
+          var b = incoming ? incoming[id] : null;
+          if (a && !b) { out[id] = a; return; }
+          if (b && !a) { out[id] = b; return; }
+          var ta = a.lastRated ? Date.parse(a.lastRated) : 0;
+          var tb = b.lastRated ? Date.parse(b.lastRated) : 0;
+          out[id] = (tb >= ta) ? b : a;
+        });
+        return out;
+      }
       function saveSchedule(s) {
-        try { localStorage.setItem(FC_KEY, JSON.stringify(s)); } catch(e) {}
+        try {
+          var current = loadSchedule();          // re-read what's in storage right now
+          var merged = mergeSchedules(current, s); // merge this tab's change into it
+          localStorage.setItem(FC_KEY, JSON.stringify(merged));
+        } catch(e) {
+          try { localStorage.setItem(FC_KEY, JSON.stringify(s)); } catch(e2) {}
+        }
       }
 
       /* ============================================================
@@ -7573,6 +7597,27 @@
         } catch(e) {}
         applyThemeUI();
       })();
+
+      // Batch 1: live cross-tab theme sync. When another open tab changes the
+      // theme, this tab updates immediately without a refresh.
+      window.addEventListener('storage', function(e) {
+        if (e.key !== THEME_KEY) return;
+        if (e.newValue === 'light') document.documentElement.setAttribute('data-theme', 'light');
+        else document.documentElement.removeAttribute('data-theme');
+        try { applyThemeUI(); } catch(err) {}
+      });
+
+      // Batch 2: when another tab changes the flashcard schedule, refresh this
+      // tab's stats and current view so due counts stay accurate live.
+      window.addEventListener('storage', function(e) {
+        if (e.key !== FC_KEY) return;
+        try {
+          updateStats();
+          if (currentTab === 'review') renderReview();
+          else if (currentTab === 'browse') renderBrowse();
+        } catch(err) {}
+      });
+
 
       /* ============================================================
          UTIL

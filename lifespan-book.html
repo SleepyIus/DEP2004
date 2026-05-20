@@ -26052,6 +26052,41 @@
         applyThemeUI();
       })();
 
+      // Batch 1: live cross-tab theme sync. When another open tab changes the
+      // theme, this tab updates immediately without a refresh.
+      window.addEventListener('storage', function(e) {
+        if (e.key !== THEME_KEY) return;
+        if (e.newValue === 'light') document.documentElement.setAttribute('data-theme', 'light');
+        else document.documentElement.removeAttribute('data-theme');
+        try { applyThemeUI(); } catch(err) {}
+      });
+
+      // Batch 2: when another tab changes the flashcard schedule, re-mark any
+      // mid-reads visible in the open chapter so their rated state stays current.
+      window.addEventListener('storage', function(e) {
+        if (e.key !== FC_KEY) return;
+        try { refreshMidReadMarks(); } catch(err) {}
+      });
+
+      // Batch 3: when another tab changes bookmarks, refresh the count badge and
+      // the bookmarks list (if its overlay is open).
+      window.addEventListener('storage', function(e) {
+        if (e.key !== BOOKMARK_KEY && e.key !== 'lifespan_bookmarks_tomb') return;
+        try {
+          updateBookmarkCountUI();
+          var ov = document.getElementById('bookmarksOverlay');
+          if (ov && ov.classList.contains('show')) renderBookmarksList();
+        } catch(err) {}
+      });
+
+      // Batch 4: when another tab changes reading progress, repaint the planner
+      // checkboxes and unit bars so they stay in sync.
+      window.addEventListener('storage', function(e) {
+        if (e.key !== BOOK_KEY) return;
+        try { paintAllCheckboxes(); updateAllUnitBars(); } catch(err) {}
+      });
+
+
       var themeToggle = document.getElementById('themeToggle');
       if (themeToggle) {
         themeToggle.addEventListener('click', function() {
@@ -26078,10 +26113,79 @@
       }
 
       function getBookProgress() { return loadJson(BOOK_KEY) || {}; }
-      function setBookProgress(obj) { saveJson(BOOK_KEY, obj); }
+      // Batch 4: extract numeric progress value (0/1/2) from either the legacy
+      // plain-number shape or the timestamped {v,t} shape.
+      function progVal(entry) {
+        if (entry == null) return 0;
+        if (typeof entry === 'number') return entry;
+        if (typeof entry === 'object' && 'v' in entry) return entry.v || 0;
+        return 0;
+      }
+      function progEntry(entry) {
+        if (entry == null) return null;
+        if (typeof entry === 'number') return { v: entry, t: 0 };
+        if (typeof entry === 'object' && 'v' in entry) return { v: entry.v, t: entry.t || 0 };
+        return null;
+      }
+      // Batch 4: merge progress maps. Newer timestamp wins; on tie, higher value
+      // (more progress) wins. Chapters present in only one side survive.
+      function mergeBookProgress(current, incoming) {
+        current = current || {}; incoming = incoming || {};
+        var out = {}, ids = {};
+        Object.keys(current).forEach(function(k){ ids[k] = true; });
+        Object.keys(incoming).forEach(function(k){ ids[k] = true; });
+        Object.keys(ids).forEach(function(id) {
+          var a = progEntry(current[id]);
+          var b = progEntry(incoming[id]);
+          if (a && !b) { out[id] = current[id]; return; }
+          if (b && !a) { out[id] = incoming[id]; return; }
+          if (b.t > a.t) out[id] = incoming[id];
+          else if (a.t > b.t) out[id] = current[id];
+          else out[id] = (b.v >= a.v) ? incoming[id] : current[id];
+        });
+        return out;
+      }
+      function setBookProgress(obj) {
+        try { saveJson(BOOK_KEY, mergeBookProgress(getBookProgress(), obj)); }
+        catch(e) { saveJson(BOOK_KEY, obj); }
+      }
 
       function loadFcSchedule() { return loadJson(FC_KEY) || {}; }
-      function saveFcSchedule(s) { saveJson(FC_KEY, s); }
+      // Batch 2: merge two schedules, keeping the newer card per id (by lastRated).
+      // Cards present in only one side survive. Prevents this tab's save from
+      // clobbering a concurrent rating made in the flashcards tab.
+      function mergeFcSchedules(current, incoming) {
+        var out = {}, ids = {};
+        Object.keys(current || {}).forEach(function(k){ ids[k] = true; });
+        Object.keys(incoming || {}).forEach(function(k){ ids[k] = true; });
+        Object.keys(ids).forEach(function(id) {
+          var a = current ? current[id] : null;
+          var b = incoming ? incoming[id] : null;
+          if (a && !b) { out[id] = a; return; }
+          if (b && !a) { out[id] = b; return; }
+          var ta = a.lastRated ? Date.parse(a.lastRated) : 0;
+          var tb = b.lastRated ? Date.parse(b.lastRated) : 0;
+          out[id] = (tb >= ta) ? b : a;
+        });
+        return out;
+      }
+      function saveFcSchedule(s) {
+        try {
+          var current = loadFcSchedule();
+          saveJson(FC_KEY, mergeFcSchedules(current, s));
+        } catch(e) { saveJson(FC_KEY, s); }
+      }
+      // Re-mark mid-reads in the open modal as rated/unrated from current schedule.
+      function refreshMidReadMarks() {
+        try {
+          var sched = loadFcSchedule();
+          document.querySelectorAll('.mid-read').forEach(function(aside) {
+            var id = aside.dataset.fcId;
+            if (!id) return;
+            if (sched[id]) aside.classList.add('rated');
+          });
+        } catch(e) {}
+      }
 
       function recordLastChapter(chapterId, initialTabId) {
         var item = document.querySelector('.sidebar-item[data-section="' + chapterId + '"] .item-name');
@@ -26144,7 +26248,7 @@
         var prog = getBookProgress();
         document.querySelectorAll('.planner-check[data-toggle-check]').forEach(function(el) {
           var chId = el.dataset.toggleCheck;
-          applyCheckUI(el, prog[chId] || 0);
+          applyCheckUI(el, progVal(prog[chId]));
         });
         updateAllUnitBars();
       }
@@ -26156,7 +26260,7 @@
           var total = range.to - range.from + 1;
           var done = 0, partial = 0;
           for (var n = range.from; n <= range.to; n++) {
-            var v = prog['ch' + n] || 0;
+            var v = progVal(prog['ch' + n]);
             if (v >= 2) done++;
             else if (v === 1) partial++;
           }
@@ -26175,9 +26279,9 @@
           e.stopPropagation();
           var chId = el.dataset.toggleCheck;
           var prog = getBookProgress();
-          var current = prog[chId] || 0;
+          var current = progVal(prog[chId]);
           var next = (current + 1) % 3;     // 0 → 1 → 2 → 0
-          prog[chId] = next;
+          prog[chId] = { v: next, t: Date.now() };
           setBookProgress(prog);
           applyCheckUI(el, next);
           updateAllUnitBars();
@@ -26356,8 +26460,8 @@
 
         // Mark chapter as in-progress if currently 0
         var prog = getBookProgress();
-        if (!prog[chapterId]) {
-          prog[chapterId] = 1;
+        if (!progVal(prog[chapterId])) {
+          prog[chapterId] = { v: 1, t: Date.now() };
           setBookProgress(prog);
           paintAllCheckboxes();
         }
@@ -26462,12 +26566,49 @@
       /* ============================================================
          BOOKMARKS
          ============================================================ */
-      function loadBookmarks() {
+      var BOOKMARK_TOMB_KEY = 'lifespan_bookmarks_tomb';
+      function bmKey(b) { return (b.chapterId || '') + '::' + (b.sectionId || ''); }
+      function loadBookmarksRaw() {
         try { return JSON.parse(localStorage.getItem(BOOKMARK_KEY) || '[]'); }
         catch(e) { return []; }
       }
+      function loadBookmarkTomb() {
+        try { return JSON.parse(localStorage.getItem(BOOKMARK_TOMB_KEY) || '{}'); }
+        catch(e) { return {}; }
+      }
+      function saveBookmarkTomb(t) {
+        try { localStorage.setItem(BOOKMARK_TOMB_KEY, JSON.stringify(t)); } catch(e) {}
+      }
+      function loadBookmarks() { return loadBookmarksRaw(); }
+      // Batch 3: union bookmarks by chapter::section (newer addedAt wins), drop any
+      // whose tombstone is at least as new as the bookmark's add time.
+      function mergeBookmarks(current, incoming, tomb) {
+        current = current || []; incoming = incoming || []; tomb = tomb || {};
+        var byKey = {};
+        function consider(b) {
+          if (!b) return;
+          var k = bmKey(b);
+          var prev = byKey[k];
+          if (!prev) { byKey[k] = b; return; }
+          var tp = prev.addedAt ? Date.parse(prev.addedAt) : 0;
+          var tb = b.addedAt ? Date.parse(b.addedAt) : 0;
+          if (tb >= tp) byKey[k] = b;
+        }
+        current.forEach(consider); incoming.forEach(consider);
+        Object.keys(tomb).forEach(function (k) {
+          var item = byKey[k]; if (!item) return;
+          var touch = item.addedAt ? Date.parse(item.addedAt) : 0;
+          if (tomb[k] >= touch) delete byKey[k];
+        });
+        return Object.keys(byKey).map(function (k) { return byKey[k]; });
+      }
       function saveBookmarks(arr) {
-        try { localStorage.setItem(BOOKMARK_KEY, JSON.stringify(arr)); } catch(e) {}
+        try {
+          var merged = mergeBookmarks(loadBookmarksRaw(), arr, loadBookmarkTomb());
+          localStorage.setItem(BOOKMARK_KEY, JSON.stringify(merged));
+        } catch(e) {
+          try { localStorage.setItem(BOOKMARK_KEY, JSON.stringify(arr)); } catch(e2) {}
+        }
       }
 
       function toggleBookmark(chId, secId, label) {
@@ -26478,13 +26619,20 @@
             idx = i; break;
           }
         }
-        if (idx >= 0) bookmarks.splice(idx, 1);
-        else bookmarks.push({
-          chapterId: chId,
-          sectionId: secId,
-          label: label,
-          addedAt: new Date().toISOString()
-        });
+        if (idx >= 0) {
+          // Batch 3: tombstone the removal so it doesn't resurrect via merge
+          var t = loadBookmarkTomb();
+          t[chId + '::' + secId] = Date.now();
+          saveBookmarkTomb(t);
+          bookmarks.splice(idx, 1);
+        } else {
+          bookmarks.push({
+            chapterId: chId,
+            sectionId: secId,
+            label: label,
+            addedAt: new Date().toISOString()
+          });
+        }
         saveBookmarks(bookmarks);
       }
 
@@ -26996,11 +27144,49 @@
       var _applying = false;
       var observer = null;
 
+      var TOMB_KEY = 'lifespan_highlights_tomb';
       function load() {
         try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { return []; }
       }
+      function loadTomb() {
+        try { return JSON.parse(localStorage.getItem(TOMB_KEY) || '{}'); } catch (e) { return {}; }
+      }
+      function saveTomb(t) {
+        try { localStorage.setItem(TOMB_KEY, JSON.stringify(t)); } catch (e) {}
+      }
+      // Batch 3: record a deletion so it survives a merge from another tab's
+      // stale copy (prevents deleted highlights from resurrecting).
+      function tombstone(id) {
+        var t = loadTomb(); t[id] = Date.now(); saveTomb(t);
+      }
+      // Batch 3: union highlights by id (newer edit/created wins), then drop any
+      // id whose tombstone is at least as new as the item's last touch.
+      function mergeHighlights(current, incoming, tomb) {
+        current = current || []; incoming = incoming || []; tomb = tomb || {};
+        var byId = {};
+        function consider(h) {
+          if (!h || !h.id) return;
+          var prev = byId[h.id];
+          if (!prev) { byId[h.id] = h; return; }
+          var tp = prev.edited || prev.created || 0;
+          var th = h.edited || h.created || 0;
+          if (th >= tp) byId[h.id] = h;
+        }
+        current.forEach(consider); incoming.forEach(consider);
+        Object.keys(tomb).forEach(function (id) {
+          var item = byId[id]; if (!item) return;
+          var touch = item.edited || item.created || 0;
+          if (tomb[id] >= touch) delete byId[id];
+        });
+        return Object.keys(byId).map(function (k) { return byId[k]; });
+      }
       function save(arr) {
-        try { localStorage.setItem(KEY, JSON.stringify(arr)); } catch (e) {}
+        try {
+          var merged = mergeHighlights(load(), arr, loadTomb());
+          localStorage.setItem(KEY, JSON.stringify(merged));
+        } catch (e) {
+          try { localStorage.setItem(KEY, JSON.stringify(arr)); } catch (e2) {}
+        }
       }
       function byId(id) { return load().filter(function (h) { return h.id === id; })[0]; }
       function modalBody() { return document.getElementById('modalBody'); }
@@ -27328,7 +27514,7 @@
         var clean = sanitizeNote(popEdit.innerHTML);
         var arr = load();
         for (var i = 0; i < arr.length; i++) {
-          if (arr[i].id === popoverId) { arr[i].note = clean; arr[i].color = popoverColor; break; }
+          if (arr[i].id === popoverId) { arr[i].note = clean; arr[i].color = popoverColor; arr[i].edited = Date.now(); break; }
         }
         save(arr); closePopover(); reapply(); updateFab();
         if (overlay.classList.contains('show')) renderPanel();
@@ -27339,6 +27525,7 @@
       });
 
       function deleteHl(id) {
+        tombstone(id);   // Batch 3: mark deleted so it can't resurrect via merge
         save(load().filter(function (h) { return h.id !== id; }));
         reapply(); updateFab();
         if (overlay.classList.contains('show')) renderPanel();
@@ -27499,6 +27686,16 @@
         });
         observer.observe(mb, { childList: true, subtree: true });
       }
+
+      // Batch 3: when another tab changes highlights, re-apply to the open
+      // chapter and refresh the FAB count and panel (if open).
+      window.addEventListener('storage', function (e) {
+        if (e.key !== KEY && e.key !== TOMB_KEY) return;
+        try {
+          reapply(); updateFab();
+          if (overlay && overlay.classList.contains('show')) renderPanel();
+        } catch (err) {}
+      });
 
       startObserver();
       updateFab();

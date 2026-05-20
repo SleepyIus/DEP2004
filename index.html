@@ -786,7 +786,9 @@
         'lifespan_book_progress',
         'lifespan_fc_schedule',
         'lifespan_bookmarks',
+        'lifespan_bookmarks_tomb',
         'lifespan_highlights',
+        'lifespan_highlights_tomb',
         'lifespan_theme'
       ];
 
@@ -813,6 +815,26 @@
         applyThemeUI();
       })();
 
+      // Batch 1: live cross-tab theme sync. When another open tab changes the
+      // theme, this tab updates immediately without a refresh.
+      window.addEventListener('storage', function(e) {
+        if (e.key !== THEME_KEY) return;
+        if (e.newValue === 'light') document.documentElement.setAttribute('data-theme', 'light');
+        else document.documentElement.removeAttribute('data-theme');
+        try { applyThemeUI(); } catch(err) {}
+      });
+
+      // Batch 4: when another tab changes any tracked data (progress, schedule,
+      // bookmarks, highlights), refresh the hub dashboard live.
+      window.addEventListener('storage', function(e) {
+        if (!e.key) return;
+        if (e.key === BOOK_KEY || e.key === FC_KEY ||
+            e.key === LAST_CH_KEY_HUB || e.key.indexOf('lifespan_') === 0) {
+          try { updateProgressUI(); updatePickupPanel(); } catch(err) {}
+        }
+      });
+
+
       if (themeToggle) {
         themeToggle.addEventListener('click', function() {
           var isLight = document.documentElement.getAttribute('data-theme') === 'light';
@@ -834,13 +856,22 @@
         } catch(e) { return null; }
       }
 
+      // Batch 4: read a progress value (0/1/2) from either the legacy plain-number
+      // shape or the timestamped {v,t} shape the book now writes.
+      function progVal(entry) {
+        if (entry == null) return 0;
+        if (typeof entry === 'number') return entry;
+        if (typeof entry === 'object' && 'v' in entry) return entry.v || 0;
+        return 0;
+      }
       function countProgress(progressObj) {
         if (!progressObj) return { done: 0, partial: 0 };
         var done = 0, partial = 0;
         for (var k in progressObj) {
           if (!Object.prototype.hasOwnProperty.call(progressObj, k)) continue;
-          if (progressObj[k] >= 2) done++;
-          else if (progressObj[k] === 1) partial++;
+          var v = progVal(progressObj[k]);
+          if (v >= 2) done++;
+          else if (v === 1) partial++;
         }
         return { done: done, partial: partial };
       }
@@ -907,7 +938,7 @@
           var total = range.to - range.from + 1;
           var done  = 0, partial = 0;
           for (var n = range.from; n <= range.to; n++) {
-            var v = bookProgress['ch' + n] || 0;
+            var v = progVal(bookProgress['ch' + n]);
             if (v >= 2)      done++;
             else if (v === 1) partial++;
           }
