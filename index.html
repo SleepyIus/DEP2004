@@ -616,7 +616,7 @@
     <section class="stats">
       <div class="stat"><div class="stat-value">16</div><div class="stat-label">Chapters</div></div>
       <div class="stat"><div class="stat-value">4</div><div class="stat-label">Units</div></div>
-      <div class="stat"><div class="stat-value" id="starterStat">1052</div><div class="stat-label">Starter Cards</div></div>
+      <div class="stat"><div class="stat-value" id="starterStat">1048</div><div class="stat-label">Starter Cards</div></div>
     </section>
 
     <!-- 3. PICKUP PANEL -->
@@ -678,11 +678,11 @@
         </p>
         <div class="tool-meta">
           <span class="tool-meta-item"><strong>SM-2</strong> algorithm</span>
-          <span class="tool-meta-item"><strong id="fcStarterMeta">1052</strong> starter cards</span>
+          <span class="tool-meta-item"><strong id="fcStarterMeta">1048</strong> starter cards</span>
         </div>
         <div class="progress-row">
           <div class="progress-bar"><div class="progress-fill" id="fcProgress"></div></div>
-          <div class="progress-text" id="fcProgressText">1052 ready</div>
+          <div class="progress-text" id="fcProgressText">1048 ready</div>
         </div>
         <div class="tool-cta">Start review →</div>
       </a>
@@ -920,10 +920,10 @@
                       : '0%';
         if (fcText) fcText.textContent = fcStats.due > 0
                       ? (fcStats.due + ' due now')
-                      : (fcStats.scheduled > 0 ? 'All caught up' : '1052 ready');
+                      : (fcStats.scheduled > 0 ? 'All caught up' : '1048 ready');
 
         // Starter Cards stat + tool-meta
-        var TOTAL_DECK_SIZE = 1052;
+        var TOTAL_DECK_SIZE = 1048;
         var starterStat = document.getElementById('starterStat');
         var fcStarter   = document.getElementById('fcStarterMeta');
         var starterCount = fcStats.scheduled > 0

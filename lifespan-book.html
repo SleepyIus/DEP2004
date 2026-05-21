@@ -182,6 +182,27 @@
       margin-bottom: 2px;
     }
     .search-result-snippet { color: var(--text2); line-height: 1.4; }
+    .search-result-snippet mark {
+      background: var(--accent-soft, rgba(124,58,237,0.25));
+      color: var(--text);
+      font-weight: 600;
+      padding: 0 1px;
+      border-radius: 2px;
+    }
+    /* Brief flash highlight when search jumps to a term in the open chapter */
+    .search-flash {
+      background: #fad65a;
+      color: #1a1a1a;
+      border-radius: 3px;
+      box-shadow: 0 0 0 3px #fad65a;
+      animation: searchFlashPulse 2.4s ease-out;
+    }
+    [data-theme="light"] .search-flash { background: #ffcc00; box-shadow: 0 0 0 3px #ffcc00; }
+    @keyframes searchFlashPulse {
+      0%   { background: #ffd84d; box-shadow: 0 0 0 4px #ffd84d; }
+      70%  { background: #fad65a; box-shadow: 0 0 0 3px #fad65a; }
+      100% { background: transparent; box-shadow: 0 0 0 0 transparent; }
+    }
     .search-empty {
       padding: 10px 14px;
       font-size: 12px;
@@ -894,8 +915,8 @@
     .mid-read {
       margin: 26px 0;
       padding: 20px 22px;
-      background: linear-gradient(135deg, var(--surface), var(--surface2));
-      border-left: 3px solid var(--accent2);
+      background: linear-gradient(135deg, var(--surface), var(--indeterminate-bg));
+      border-left: 3px solid var(--indeterminate);
       border-radius: 0 12px 12px 0;
       position: relative;
     }
@@ -918,7 +939,7 @@
       padding: 0 8px;
       font-size: 9px; font-weight: 700;
       letter-spacing: 0.15em;
-      color: var(--accent2);
+      color: var(--indeterminate);
       text-transform: uppercase;
     }
     .mid-read[data-fc-type="warning"]::before {
@@ -934,11 +955,15 @@
       color: var(--prompt-priority);
     }
     .mid-read-q {
-      font-size: 14.5px; font-weight: 500;
-      color: var(--text);
+      font-size: 14.5px; font-weight: 600;
+      color: var(--indeterminate);
       margin-bottom: 12px;
       line-height: 1.5;
     }
+    /* Per-type question color so the question line signals both WHERE and WHAT KIND */
+    .mid-read[data-fc-type="warning"]  .mid-read-q { color: var(--nonreassuring); }
+    .mid-read[data-fc-type="calc"]     .mid-read-q { color: var(--prompt-content); }
+    .mid-read[data-fc-type="priority"] .mid-read-q { color: var(--prompt-priority); }
     .mid-read-reveal {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1350,7 +1375,7 @@
       </div>
 
       <div class="sidebar-search">
-        <input id="searchInput" type="text" placeholder="Search chapters…" autocomplete="off">
+        <input id="searchInput" type="text" placeholder="Search words or chapters…" autocomplete="off">
         <div id="searchResults"></div>
       </div>
 
@@ -1890,6 +1915,24 @@
                   these intersections constantly. This chapter introduces the habit; later chapters
                   return to it again and again.
                 </p>
+              </article>
+
+              <article class="condition-block">
+                <header class="condition-head">
+                  <h3 class="condition-name">What do you think?</h3>
+                </header>
+                <p>
+                  A <strong>Pew Research Center</strong> survey found that many U.S. adults would want
+                  biological enhancements to extend their lives, and some would consider <strong>genetic
+                  editing</strong> to lower their children's disease risk. Imagine a future where these
+                  options are routinely available, then sit with these questions:
+                </p>
+                <ul>
+                  <li>Would most people actually want to live to 120 or more if the option existed?</li>
+                  <li>Would dramatically extending the typical life span raise new ethical questions about what it means to live a "full and purpose-driven life"?</li>
+                  <li>Is the desire to live longer better understood as biology, culture, or some combination of both?</li>
+                  <li>Who should have access to these technologies, and what happens if access is uneven?</li>
+                </ul>
               </article>
             </div>
           </section>
@@ -2447,18 +2490,7 @@
               </div>
             </aside>
 
-            <aside class="wdyt-card">
-              <p class="wdyt-label">What Do You Think?</p>
-              <p class="wdyt-stem">
-                <em>Time</em> magazine has explored whether a baby born since 2005 might live to <strong>142 years</strong> or longer. A Pew Research Center survey found that many U.S. adults would want biological enhancements to extend their lives, and some would consider genetic editing to lower their children's disease risk. Imagine a future where these options are routinely available.
-              </p>
-              <ul>
-                <li>Do you think most people would actually want to live to 120 or more if the option were available?</li>
-                <li>Would dramatically extending the typical life span raise new ethical questions about what it means to live a "full and purpose-driven life"?</li>
-                <li>Is the desire to live longer better understood as biology, culture, or some combination of both?</li>
-                <li>Who should have access to these technologies, and what happens if access is uneven?</li>
-              </ul>
-            </aside>
+            
 
             <aside class="mid-read"
               data-fc-id="fc-ch1-correlation-causation"
@@ -3492,7 +3524,7 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>How did they measure?</h4>
-                  <p>Two variables: <strong>fetal movement</strong> (measured by ultrasound at multiple gestational ages — 24, 32, and 36 weeks) and <strong>children's shyness and fearfulness</strong> at follow-up (measured via maternal questionnaires).</p>
+                  <p><strong>Sample</strong>: 385 women and their children. <strong>Prenatal measure</strong>: each mother was tested at 24, 32, and 36 weeks gestational age — lying quietly for 50 minutes while ultrasound recorded <strong>fetal movement</strong>. <strong>Childhood measure</strong>: when children were ~10 years old, mothers completed questionnaires assessing <strong>shyness and fearfulness</strong> (e.g., "My child feels shy when meeting new people"; "My child avoids going down high slides at a playground").</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What was the design?</h4>
@@ -3504,28 +3536,20 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>What did the investigators conclude?</h4>
-                  <p>The findings support continuity from prenatal life forward: in DiPietro and colleagues' words, <em>"over fairly protracted differences in time and place, core features of individual differences are preserved."</em> Fetal behavior at one specific developmental window (~32 weeks) appears to relate to behavioral disposition in childhood.</p>
+                  <p>The findings support continuity from prenatal life forward: in DiPietro and colleagues' words, <em>"over fairly protracted differences in time and place, core features of individual differences are preserved"</em> (DiPietro et al., 2018, p. 868). Fetal behavior at one specific developmental window (~32 weeks) appears to relate to behavioral disposition in childhood.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What would strengthen the conclusions?</h4>
-                  <p>Estimates of children's inhibition relied solely on <strong>maternal reports</strong>; converging evidence from teachers, peer observations, and structured behavioral tasks would strengthen the case. Following the same children into adolescence and adulthood would also clarify whether the continuity holds across longer timescales.</p>
+                  <p>Estimates of children's inhibition relied solely on <strong>maternal reports</strong>; converging evidence from teachers, peer observations, and structured behavioral tasks would strengthen the case. The design is <strong>correlational</strong>, so it can't establish causation — fetal activity may share genetic or biological causes with later temperament rather than directly causing it. The <strong>window-specificity</strong> (32 weeks but not 24 or 36) suggests a particular developmental period matters, but the mechanism isn't yet clear. Following the same children into adolescence and adulthood would also clarify whether the continuity holds across longer timescales.</p>
+                </div>
+                <div class="sr-qa-item">
+                  <h4>Why this matters clinically</h4>
+                  <p>It reinforces that <strong>temperament has prenatal roots</strong>, not just postnatal experience. Behavioral inhibition is a documented risk factor for childhood anxiety disorders, so early identification may enable early intervention. Understanding that some "shy and fearful" patterns are <em>temperamental from the start</em> can also reduce parental anxiety and counter the assumption that they reflect a parenting failure.</p>
                 </div>
               </div>
             </aside>
 
-            <aside class="wdyt-card">
-              <p class="wdyt-label">What Do You Think? · Reproductive Technology</p>
-              <p class="wdyt-stem">
-                More than 40 years ago, <strong>Louise Brown</strong> captured world attention as the first "test-tube baby" — conceived via in vitro fertilization (IVF) instead of inside a uterus. Today, assisted reproductive technology is used by American women more than <strong>306,000 times annually</strong>, producing over <strong>80,000 babies</strong> per year. A single IVF cycle costs roughly <strong>$12,000</strong>; cumulative costs sometimes exceed <strong>$100,000</strong>, and most US insurance does not cover it. About 5% of users are 45 or older.
-              </p>
-              <ul>
-                <li>Should new reproductive technology be available to all women regardless of income, ethnicity, or age — or should it remain accessible primarily to affluent, younger women?</li>
-                <li>The technology comes with elevated risks — twins, triplets, and birth defects. Are the risks always justified? When might they not be?</li>
-                <li>Some ethicists argue that because infertility is a medical condition, IVF should be insurance-covered like other treatable conditions. Others argue parenthood isn't a medical entitlement. Which view do you find more defensible, and why?</li>
-                <li>If a healthy 50-year-old woman can expect to live another 35 years, is age-based criticism of older-mother IVF fair, or is it ageist?</li>
-              </ul>
-            </aside>
-
+            
             <aside class="mid-read"
               data-fc-id="fc-ch2-genotype-phenotype"
               data-fc-ch="2"
@@ -3677,53 +3701,7 @@
               </aside>
             </div>
 
-            <div class="topic-group">
-              <h3 class="topic-group-head">Spotlight on Research — fetal movement &amp; behavioral inhibition</h3>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">DiPietro et al. (2018) — does fetal activity predict childhood temperament?</h3>
-                </header>
-                <p>
-                  <strong>The question</strong>: One of the recurring issues in human development is
-                  <em>continuity</em> — the extent to which behaviors early in life are linked to behaviors
-                  later. <strong>Janet DiPietro</strong> and colleagues asked whether <em>fetal movements</em>
-                  during pregnancy would relate to <strong>behavioral inhibition</strong> (a term for
-                  children who are often shy and fearful) ten years later.
-                </p>
-                <p>
-                  <strong>Method</strong>:
-                </p>
-                <ul>
-                  <li><strong>Sample</strong>: 385 women and their children</li>
-                  <li><strong>Prenatal measure</strong>: each mother was tested at 24, 32, and 36 weeks gestational age — lying quietly for 50 minutes while ultrasound recorded fetal movements</li>
-                  <li><strong>Childhood measure</strong>: when children were ~10 years old, mothers completed questionnaires assessing shyness and fearfulness (e.g., "My child feels shy when meeting new people"; "My child avoids going down high slides at a playground")</li>
-                  <li><strong>Design</strong>: correlational — examining the natural relationship between fetal movement and later behavioral inhibition</li>
-                  <li><strong>Ethics</strong>: standard prenatal ultrasound and questionnaires; no risks beyond routine care</li>
-                </ul>
-                <p>
-                  <strong>Results</strong>:
-                </p>
-                <ul>
-                  <li>At 24 and 36 weeks: <em>no relationship</em> between fetal activity and later behavioral inhibition</li>
-                  <li>At <strong>32 weeks</strong>: a clear negative relationship — fetuses who moved <em>less</em> were the children who became <em>more shy and fearful</em> at age 10; fetuses who moved more were less shy and fearful</li>
-                </ul>
-                <p>
-                  <strong>Conclusion</strong>: "Core features of individual differences are preserved"
-                  across the prenatal-to-childhood span (DiPietro et al., 2018, p. 868). The textbook's
-                  framing: continuity is real, and it stretches back further than most people imagine.
-                </p>
-                <div class="finding-card">
-                  <h4>Methodological critiques</h4>
-                  <p>(1) Behavioral inhibition was based <em>only on maternal report</em>; would be strengthened by teacher reports and direct observation in shyness-eliciting situations. (2) Would benefit from re-measuring in adolescence and adulthood to test whether continuity persists. (3) Correlational, so can't establish causation — fetal activity may share genetic or biological causes with later temperament rather than directly causing it. (4) The window-specificity (32 weeks but not 24 or 36) suggests a particular developmental period matters, but the mechanism isn't yet clear.</p>
-                </div>
-                <div class="finding-card">
-                  <h4>Why this matters clinically</h4>
-                  <p>(1) Reinforces that <em>temperament has prenatal roots</em>, not just postnatal experience. (2) Behavioral inhibition is a documented risk factor for childhood anxiety disorders — early identification may enable early intervention. (3) Parental anxiety can be reduced by understanding that some "shy and fearful" patterns are temperamental from the start, not a sign of parenting failure. (4) Helps frame the nature-nurture conversation — even prenatal "experience" (in the form of fetal behavior) connects to later development.</p>
-                </div>
-              </article>
-            </div>
-          </section>
+                      </section>
 
           <!-- TAB 4: 2.3 Influences on Prenatal Development -->
           <section id="ch2-influences" class="content-section">
@@ -5228,7 +5206,7 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>How did they measure it?</h4>
-                  <p>The researchers created <strong>"sticky" mittens</strong> covered with Velcro, paired with Velcro-covered toys. Wearing the mittens, any contact let a 3-month-old "grasp" a toy. For 2 weeks, babies wore the mittens daily for 10 minutes. The dependent variable: <strong>percentage of time babies tried to grasp novel toys</strong> in the lab.</p>
+                  <p>The researchers created <strong>"sticky" mittens</strong> covered with Velcro, paired with Velcro-covered toys. Wearing the mittens, any contact let a 3-month-old "grasp" a toy. For 2 weeks, babies wore the mittens daily for 10 minutes. The dependent variable: <strong>percentage of time babies tried to grasp novel toys</strong> (a rattle at 3 months; a bead maze at 15 months).</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What was the design?</h4>
@@ -5240,31 +5218,24 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>What were the results?</h4>
-                  <p>At <strong>3 months</strong>, sticky-mitten babies were more likely than other groups to grasp objects. The striking finding: <strong>at 15 months — a full year after the training ended — the same babies were STILL more likely to grasp objects</strong>. Wearing regular (non-Velcro) mittens did not produce the effect.</p>
+                  <p>At <strong>3 months</strong>, sticky-mitten babies were more likely than other groups to grasp objects. The striking finding: <strong>at 15 months — a full year after the training ended — the same babies were STILL more likely to grasp objects</strong>. Wearing regular (non-Velcro) mittens did not produce the effect, ruling out the simple "more contact" explanation.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What did the investigators conclude?</h4>
-                  <p>Training babies to reach had <strong>immediate AND long-term benefits</strong>. Training likely affected babies directly — they learned the benefits of grasping and explored objects more — which compounded into cognitive and motor advantages a year later. This is an important demonstration that early motor experiences can have lasting consequences.</p>
+                  <p>Training babies to reach had <strong>immediate AND long-term benefits</strong>, likely through two pathways: (1) <em>direct</em> — babies learned that reaching and grasping have payoffs and explored objects more; (2) <em>indirect</em> — when parents see babies interested in objects, they engage them in more object-oriented play, feeding further motor and cognitive development. This is an important demonstration that early motor experiences can have lasting consequences. Notably, this was an <strong>experimental</strong> design in infant development — relatively rare, since most infant research is correlational because experiences can't usually be randomly assigned — which makes its demonstration of <em>cascading developmental effects</em> especially strong.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What would strengthen the conclusions?</h4>
                   <p>Following participants beyond 15 months to see whether the effect extends further. Testing whether the training affects related domains — like learning object names or parent-child play involving objects. Including children from more diverse backgrounds.</p>
                 </div>
+                <div class="sr-qa-item">
+                  <h4>Why this matters clinically</h4>
+                  <p>Early intervention for infants with motor delays may matter more than previously assumed, because motor delays can <strong>cascade</strong> into cognitive and social delays. Physical and occupational therapy for infants isn't only about motor outcomes — it scaffolds the whole developmental sequence. And toy choice and the encouragement of object exploration in infancy are developmentally meaningful, not "just play."</p>
+                </div>
               </div>
             </aside>
 
-            <aside class="wdyt-card">
-              <p class="wdyt-label">What Do You Think? · Breastfeeding</p>
-              <p class="wdyt-stem">
-                Human milk contains optimal nutrition for babies. Breastfeeding has short-term benefits (fewer infections; reduced diarrhea-related infant mortality in developing countries) and long-term benefits (lower obesity and diabetes risk). UNICEF recommends exclusive breastfeeding for the first 6 months and continued breastfeeding to age 2. Yet only about <strong>35% of US 12-month-olds receive any breastfeeding</strong>, and well-educated mothers are more than twice as likely as less-educated mothers to breastfeed. If all mothers worldwide met the guidelines, an estimated <strong>800,000+ childhood deaths annually</strong> could be prevented.
-              </p>
-              <ul>
-                <li>How can we — as individuals, communities, and nations — promote a practice with such well-documented benefits?</li>
-                <li>What structural barriers (workplace policies, formula marketing, healthcare access, parental leave) drive the gap between recommendation and practice?</li>
-                <li>How can we ensure that all babies — regardless of their parents' income, education, or work setting — have equitable access to breastfeeding support?</li>
-              </ul>
-            </aside>
-
+            
             <aside class="mid-read"
               data-fc-id="fc-ch3-handedness-development"
               data-fc-ch="3"
@@ -5334,60 +5305,7 @@
             </aside>
             </div>
 
-            <div class="topic-group">
-              <h3 class="topic-group-head">Spotlight on Research — sticky mittens &amp; the motor-cognitive link</h3>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Libertus, Joh, &amp; Needham (2010, 2016) — can training infants to grasp change development?</h3>
-                </header>
-                <p>
-                  <strong>The question</strong>: By 4-6 months, infants can reach and grasp objects —
-                  actions that let them explore, which in turn fosters cognitive, social, and linguistic
-                  development. Before 4 months, babies struggle to grasp. <em>If we could give them
-                  the experience of grasping earlier, would that boost their development?</em>
-                  Klaus Libertus and colleagues designed an experiment to find out.
-                </p>
-                <p>
-                  <strong>Method</strong>:
-                </p>
-                <ul>
-                  <li><strong>"Sticky mittens" intervention</strong>: 3-month-olds wore mittens covered in Velcro&reg;; toys were also Velcro-covered, so any contact let the baby "grasp" and lift objects. Babies wore the mittens daily for 10 minutes for 2 weeks.</li>
-                  <li><strong>Control condition 1 — regular mittens</strong>: babies wore non-Velcro mittens; parents held toys against the mittens to simulate the contact experience (controlling for parental engagement).</li>
-                  <li><strong>Control conditions 2 &amp; 3 — no training</strong>: babies received no mittens at all and were tested either at 3 months or at 15 months (cross-sectional component).</li>
-                  <li><strong>Outcome measure</strong>: percentage of time babies tried to grasp novel toys (rattle at 3 months; bead maze at 15 months).</li>
-                  <li><strong>Design</strong>: experimental (random assignment to condition) with longitudinal + cross-sectional components.</li>
-                </ul>
-                <p>
-                  <strong>Results</strong>:
-                </p>
-                <ul>
-                  <li>At 3 months <em>immediately after training</em>: babies who wore sticky mittens reached for objects far more than control babies.</li>
-                  <li><strong>At 15 months</strong> (a full year later): the sticky-mittens babies were <em>still</em> more likely to reach for objects than untrained controls.</li>
-                  <li>Regular mittens (non-Velcro control) did NOT affect reaching — ruling out the simple "more contact" explanation.</li>
-                </ul>
-                <p>
-                  <strong>Conclusion</strong>: Training infants to reach had immediate AND long-term
-                  benefits. Two pathways: (1) <em>direct</em> — the babies learned that reaching and
-                  grasping have payoffs; (2) <em>indirect</em> — when parents see babies interested in
-                  objects, parents more often engage them in object-oriented play, which feeds further
-                  motor and cognitive development.
-                </p>
-                <div class="finding-card">
-                  <h4>What makes this study important</h4>
-                  <p>It's an <strong>experimental</strong> design in infant development (relatively rare — most infant research is correlational because we can't randomly assign experiences in real life). It demonstrates <em>cascading developmental effects</em>: a small motor intervention at 3 months still affects behavior at 15 months. And it supports the idea that motor development isn't an isolated track — it scaffolds cognitive, social, and linguistic development.</p>
-                </div>
-                <div class="finding-card">
-                  <h4>Open questions (textbook frames)</h4>
-                  <p>(1) Does the impact persist beyond 15 months? (2) Does it extend to domains beyond grasping (e.g., word learning)? (3) Does training affect parent-child play patterns directly? Subsequent research has begun answering some of these.</p>
-                </div>
-                <div class="finding-card">
-                  <h4>Clinical implications</h4>
-                  <p>(1) Early intervention for infants with motor delays may matter more than was previously assumed — motor delays can cascade into cognitive and social delays. (2) Physical therapy and occupational therapy for infants aren't just about motor outcomes; they're about scaffolding the whole developmental sequence. (3) Toy choice and the encouragement of object exploration in infancy is developmentally meaningful, not just play.</p>
-                </div>
-              </article>
-            </div>
-          </section>
+                      </section>
 
           <!-- TAB 5: 3.4 Perception -->
           <section id="ch3-perception" class="content-section">
@@ -8411,22 +8329,14 @@
                   <h4>What would strengthen the conclusions?</h4>
                   <p>The sample was mostly European American, from Midwest US university towns. Replication with children from different cultures and backgrounds would address generalizability. Extending the property list to <strong>psychological properties</strong> (personality traits) would clarify whether children treat those more like physical or behavioral characteristics.</p>
                 </div>
+                <div class="sr-qa-item">
+                  <h4>How does this vary, and why does it matter?</h4>
+                  <p>The differentiation between physical and behavioral properties strengthens around <strong>age 9</strong>, mapping onto the general decline of essentialist thinking (see Meyer et al., 2017, Ch 4). The shift isn't universal in timing: children in environments with <strong>rigid gender roles</strong> hold essentialist beliefs longer, while children in <strong>egalitarian environments</strong> shift earlier, and educational interventions can accelerate it. <strong>Clinical/educational implications</strong>: (1) young children's rigid stereotypes reflect a <em>cognitive limitation</em>, not personal conviction, so modeling and counter-stereotypical exposure work better than direct argument ("girls can be doctors too!") which may not penetrate the essentialist worldview yet; (2) the ~6–9 window is a productive time for diversity education; (3) gender-affirming care for gender-diverse children must navigate this developmental cognition while recognizing that gender <em>identity</em> is distinct from beliefs about what gender <em>determines</em>; (4) health-related stereotypes ("boys don't cry," "girls are bad at math") follow similar patterns and can be addressed.</p>
+                </div>
               </div>
             </aside>
 
-            <aside class="wdyt-card">
-              <p class="wdyt-label">What Do You Think? · Single-Sex or Coeducational Schools?</p>
-              <p class="wdyt-stem">
-                More than <strong>1,500 US schools</strong> segregate boys and girls. <strong>Supporters of single-sex schools</strong> argue boys and girls learn differently and teachers can cater to each, that girls are sometimes harassed by boys in coed settings, and that teachers in coed classes often devote more attention to boys. <strong>Critics</strong> argue segregation by gender is no better than segregation by race or class, that single-sex education undermines tolerance and cross-gender cooperation, that it reinforces stereotypes (boys form views of girls without actual interaction), and that it reinforces an outmoded binary view of gender. A 2014 meta-analysis (Pahlke et al.) found that students in single-sex and coeducational schools <strong>did not differ in achievement, self-concept, or stereotypes</strong> — with some scattered exceptions (boys did better in math in single-sex <em>schools</em> but not in single-sex <em>classes within coed schools</em>; girls' verbal skills were better in single-sex <em>classes within coed schools</em>).
-              </p>
-              <ul>
-                <li>What research from earlier in this chapter could be cited to support single-sex schooling? What research supports coeducational schooling?</li>
-                <li>How does the Taylor et al. essentialism study inform this debate — does separating kids by gender risk amplifying their early-developing gender essentialism?</li>
-                <li>If single-sex schooling has scattered modest benefits without being a panacea, what's the strongest case for or against it as a policy?</li>
-                <li>How might these findings extend (or not) to non-binary students?</li>
-              </ul>
-            </aside>
-
+            
             <aside class="mid-read"
               data-fc-id="fc-ch5-gender-essentialism"
               data-fc-ch="5"
@@ -8496,63 +8406,7 @@
             </aside>
             </div>
 
-            <div class="topic-group">
-              <h3 class="topic-group-head">Spotlight on Research — reasoning about gender properties (Taylor et al., 2009)</h3>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">When do children stop treating gender as destiny?</h3>
-                </header>
-                <p>
-                  <strong>The question</strong>: Young children often treat gender as a category that
-                  determines everything about a person — physical traits, behaviors, preferences, what
-                  one will become. When does this rigid <em>essentialist</em> view of gender soften,
-                  and what does that look like developmentally?
-                </p>
-                <p>
-                  <strong>Marianne Taylor and colleagues (2009)</strong> investigated by asking children
-                  of different ages about hypothetical babies — would a baby boy raised entirely by
-                  women, surrounded only by girls, become more like a boy or a girl? And specifically,
-                  would <em>physical</em> properties (body shape, growth) be more or less malleable than
-                  <em>behavioral</em> properties (toy preferences, future career)?
-                </p>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Method and findings</h3>
-                </header>
-                <p>
-                  <strong>Method</strong>: children of varying ages were presented with vignettes
-                  describing a baby raised entirely in the environment of the other gender. They were
-                  asked which gender-related properties (physical and behavioral) the baby would
-                  develop.
-                </p>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>Younger children</h4>
-                    <p><strong>Treat physical AND behavioral properties as equally fixed by biology</strong>. A baby boy raised by women, surrounded only by girls, would still develop "boy" physical features AND "boy" behaviors and preferences. Gender determines everything.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Older children (~9 years)</h4>
-                    <p><strong>Differentiate between physical and behavioral properties</strong>. Physical properties (body shape, voice depth) still seen as biologically determined. Behavioral properties (toy preferences, future career, personality) increasingly seen as <em>shaped by environment</em>, not just gender.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>The developmental trajectory</h4>
-                    <p>This shift represents an important cognitive milestone: children stop treating gender as a single uniform essence and start understanding that <em>behavior is more malleable than biology</em>. The shift maps onto general cognitive development in essentialist thinking (see Meyer et al., 2017, on essentialism in Ch 4).</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Cultural and individual variation</h4>
-                    <p>This developmental shift isn't universal in timing or extent — children in environments with rigid gender roles maintain essentialist beliefs longer; children in egalitarian environments shift earlier. Educational interventions can accelerate the shift.</p>
-                  </div>
-                </div>
-                <div class="finding-card">
-                  <h4>Clinical and educational implications</h4>
-                  <p>(1) Young children's rigid gender stereotypes reflect a cognitive limitation, not personal conviction. Pushing back too hard ("girls can be doctors too!") may not penetrate the essentialist worldview at this age. Modeling and exposure to counter-stereotypical examples are more effective than direct argument. (2) The window from ~6-9 years is when children become more open to flexible gender understanding — a productive time for diversity education. (3) Gender-affirming care for transgender or gender-diverse children must navigate this developmental cognition — and recognize that gender identity itself is distinct from beliefs about what gender determines. (4) Health-related stereotypes ("boys don't cry," "girls are bad at math") follow similar developmental patterns and can be addressed.</p>
-                </div>
-              </article>
-            </div>
-
+            
             <div class="topic-group">
               <h3 class="topic-group-head">Evolving gender roles</h3>
 
@@ -8682,7 +8536,7 @@
                 </p>
                 <div class="finding-card">
                   <h4>What the textbook asks</h4>
-                  <p>(1) What earlier research in this chapter supports single-sex schooling? (Hint: developmental peer self-segregation, harassment effects.) What supports coeducational? (Hint: gender stereotype reduction through contact, broader social learning.) (2) Under what circumstances might single-sex schooling be more effective? (3) Which children might benefit relatively more — students from particular backgrounds, with particular goals, in particular subjects?</p>
+                  <p>(1) What earlier research in this chapter supports single-sex schooling? (Hint: developmental peer self-segregation, harassment effects.) What supports coeducational? (Hint: gender stereotype reduction through contact, broader social learning.) (2) How does the Taylor et al. essentialism study inform this debate — does separating children by gender risk <em>amplifying</em> their early-developing gender essentialism? (3) Under what circumstances might single-sex schooling be more effective? (4) How might these findings extend (or not) to non-binary students? (5) Which children might benefit relatively more — students from particular backgrounds, with particular goals, in particular subjects?</p>
                 </div>
               </article>
             </div>
@@ -10957,7 +10811,7 @@
                   </div>
                   <div class="finding-card">
                     <h4>Big picture</h4>
-                    <p>Research on same-sex parenting (along with findings on blended families) challenges the conventional wisdom that the traditional two-parent mother-father family <em>necessarily</em> provides the best circumstances. Multiple committed adults matter — that's clear from divorce research. <em>Who the adults are</em> seems to matter less than <em>what they do</em>.</p>
+                    <p>Research on same-sex parenting (along with findings on blended families) challenges the conventional wisdom that the traditional two-parent mother-father family <em>necessarily</em> provides the best circumstances. Multiple committed adults matter — that's clear from divorce research. <em>Who the adults are</em> seems to matter less than <em>what they do</em>. <em>A question worth sitting with</em>: given that children in same-sex households may have less direct in-home exposure to one sex, how do they still acquire knowledge of other-sex gender roles? Research suggests peers, extended family, media, and the wider culture supply ample exposure, so gender learning is not confined to the home.</p>
                   </div>
                 </div>
               </article>
@@ -11407,19 +11261,7 @@
               </div>
             </aside>
 
-            <aside class="wdyt-card">
-              <p class="wdyt-label">What Do You Think? · Same-Sex Parents</p>
-              <p class="wdyt-stem">
-                Many US children have a gay or lesbian parent — most commonly from a heterosexual marriage that ended in divorce when one parent came out, but increasingly children born to single LGBT individuals or LGBT couples through artificial insemination or adoption. Research consistently shows: <strong>children of same-sex parents develop much like children of heterosexual parents</strong> on self-concept, social skills, peer relations, moral reasoning, behavior, and intelligence (Farr &amp; Patterson, 2013; Golombok et al., 2014; Farr et al., 2020). Same-sex couples tend to <strong>share childrearing tasks more equitably</strong>. Family <em>process</em> variables (parental stress, discipline, warmth) predict outcomes; family <em>structure</em> does not. Some children of lesbian mothers report being bullied because of their mothers, but they also report benefits from their parents' values around acceptance and diversity.
-              </p>
-              <ul>
-                <li>How do children of same-sex parents acquire knowledge of other-sex gender roles, given that they may have less direct exposure to one sex in the home?</li>
-                <li>Why might same-sex parents share childrearing tasks more equitably than many heterosexual couples?</li>
-                <li>How might the pressures and stresses on LGBT families affect children, and what protective factors mitigate those risks?</li>
-                <li>What does this body of research suggest about the more general claim that "children need a mother and a father"?</li>
-              </ul>
-            </aside>
-
+            
             <aside class="mid-read"
               data-fc-id="fc-ch7-social-media-rejection"
               data-fc-ch="7"
@@ -12440,6 +12282,18 @@
                   <button data-rate="5" type="button">Easy<span class="mid-read-rate-small">boost</span></button>
                 </div>
               </aside>
+
+              <article class="condition-block">
+                <header class="condition-head">
+                  <h3 class="condition-name">What the textbook asks</h3>
+                </header>
+                <ul>
+                  <li>If you were writing to your state representative about transgender girls' participation in sports, what would you say?</li>
+                  <li>How do the same arguments apply (or fail to apply) to transgender boys participating in boys' sports? (There has been far less concern about a competitive advantage here.)</li>
+                  <li>Do similar issues arise when transgender girls take gender-specific roles in the arts (e.g., a ballerina), or is sport a distinct case?</li>
+                  <li>How should policymakers weigh the documented <strong>mental-health benefits of inclusion</strong> against the <strong>residual physical-advantage</strong> concerns?</li>
+                </ul>
+              </article>
             </div>
 
             <div class="topic-group">
@@ -12726,7 +12580,7 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>How did they measure it?</h4>
-                  <p>An extensive battery of tasks. Example: two bowls of marbles — one with 1 black + 9 white (labeled "10% chance") and another with 8 black + 92 white (labeled "8% chance"). Participants were asked which bowl gives a better chance of drawing black. <em>Denominator neglect</em> lures people into picking the second bowl (more black marbles look better) — but the first bowl has the higher proportion. Tasks also measured reliance on statistical info vs. personal testimony. Researchers also recorded grades, verbal and non-verbal intelligence, belief in superstition, and open-mindedness.</p>
+                  <p>An extensive battery of tasks. Example: two bowls of marbles — one with 1 black + 9 white (labeled "10% chance") and another with 8 black + 92 white (labeled "8% chance"). Participants were asked which bowl gives a better chance of drawing black. <em>Denominator neglect</em> lures people into picking the second bowl (more black marbles look better) — but the first bowl has the higher proportion. Another task pitted <strong>statistical vs. testimonial reasoning</strong> — whether a participant relies on aggregate statistics or on a single vivid personal testimony when deciding. Researchers also recorded grades, verbal and non-verbal intelligence, belief in superstition (e.g., "I have things that bring me luck"), and open-mindedness (e.g., "people should consider evidence that goes against their beliefs").</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>Who participated &amp; what was the design?</h4>
@@ -12738,28 +12592,20 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>What did the investigators conclude?</h4>
-                  <p>Adolescents who reason analytically also tend to <strong>get better grades</strong>, <strong>score higher on intelligence tests</strong>, and have <strong>more open-minded thinking dispositions</strong> — willingness to consider evidence against their beliefs, comfort with uncertainty, and skepticism of supernatural explanations. The findings suggest analytic reasoning is one component of a broader cognitive style, not a single isolated skill.</p>
+                  <p>Adolescents who reason analytically also tend to <strong>get better grades</strong>, <strong>score higher on intelligence tests</strong>, and have <strong>more open-minded thinking dispositions</strong> — willingness to consider evidence against their beliefs, comfort with uncertainty, and skepticism of supernatural explanations. The findings suggest analytic reasoning is one component of a broader cognitive style, not a single isolated skill. The study fits within <strong>dual-process theories</strong> of cognition: <em>System 1</em> (fast, automatic, heuristic) versus <em>System 2</em> (slow, deliberate, analytic). Most thinking uses System 1 because it's efficient; System 2 is recruited when stakes are high or System 1 reaches its limit. Toplak and Flora's results suggest that even when System 2 reasoning is needed, some adolescents are more likely to engage it than others — partly trained (analytic education, open-mindedness modeling) and partly dispositional.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What would strengthen the conclusions?</h4>
                   <p>The correlational design doesn't establish whether open-minded thinking <em>causes</em> analytic reasoning or vice versa, or whether both arise from a third factor (intelligence, education quality). Experimental interventions training open-mindedness or analytic reasoning could clarify the causal direction.</p>
                 </div>
+                <div class="sr-qa-item">
+                  <h4>Why this matters — teaching and clinical implications</h4>
+                  <p><strong>Teaching matters</strong>: analytic reasoning can be cultivated, particularly by teaching statistical thinking and explicitly instructing students to recognize common biases like denominator neglect. <strong>Open-mindedness matters</strong>: modeling and rewarding willingness to revise beliefs, to say "I don't know," and to weigh disconfirming evidence supports analytic reasoning. <strong>Clinically</strong>: when assessing adolescent decision-making competence (e.g., for medical decisions), look at <em>how</em> the patient reasons, not just measured intelligence — open-mindedness and resistance to superstition matter. <strong>Misinformation risk</strong>: adolescents low on analytic reasoning may be more vulnerable to conspiracy theories, pseudoscience, and harmful online content, so media-literacy education has real health-behavior stakes.</p>
+                </div>
               </div>
             </aside>
 
-            <aside class="wdyt-card">
-              <p class="wdyt-label">What Do You Think? · Transgender Girls in Sports</p>
-              <p class="wdyt-stem">
-                In 2018, <strong>Terry Miller</strong> of Bloomfield High School (Connecticut) won the girls' 100m and 200m at the New England high school championships, drawing national attention because she had transitioned from male to female after her freshman year. Cisgender competitors and their parents filed suit. State policies vary widely — some permit, some restrict, some have no policy. NCAA rules allow transgender female athletes to compete in women's events after a year of testosterone-suppression treatment. Three arguments commonly appear in debate: <strong>(1)</strong> Some argue transgender girls aren't "real girls" — but transgender girls consistently identify as female, prefer feminine activities, and there are no known cases of boys "faking" transgender identity for athletic advantage. <strong>(2)</strong> Transgender girls face elevated rates of harassment, assault, depression, anxiety, and suicide; experiences that affirm gender identity (family acceptance, healthcare access) mitigate these risks while exclusion increases them. <strong>(3)</strong> Testosterone exposure during puberty produces some physical changes (muscle mass, heart size) that hormone treatment partially but not fully reverses (Harper et al., 2021).
-              </p>
-              <ul>
-                <li>If you were writing to your state representative about transgender girls' participation in sports, what would you say?</li>
-                <li>How do the same three arguments apply (or fail to apply) when considering transgender boys participating in boys' sports? (There has been less concern that transgender boys would have a competitive advantage.)</li>
-                <li>Do similar issues arise when transgender girls participate in gender-specific roles in the arts (e.g., a ballerina), or is sports a distinct case?</li>
-                <li>How should policymakers weigh the documented mental-health benefits of inclusion against the residual physical-advantage concerns?</li>
-              </ul>
-            </aside>
-
+            
             <aside class="mid-read"
               data-fc-id="fc-ch8-denominator-neglect"
               data-fc-ch="8"
@@ -12849,69 +12695,7 @@
             </aside>
             </div>
 
-            <div class="topic-group">
-              <h3 class="topic-group-head">Spotlight on Research — Toplak &amp; Flora (2021) on analytical adolescents</h3>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">The question and the design</h3>
-                </header>
-                <p>
-                  <strong>The question</strong>: As adolescents develop, they increasingly solve
-                  problems <em>analytically</em> — using math, logic, and statistical reasoning —
-                  rather than relying on faster but error-prone heuristics. But some teenagers use
-                  analytic solutions much more than others. What distinguishes those who do?
-                </p>
-                <p>
-                  <strong>Maggie Toplak and David Flora (2021)</strong> investigated using a battery
-                  of tasks measuring analytic vs. heuristic reasoning. Two example tasks:
-                </p>
-                <ul>
-                  <li><strong>Statistical vs. testimonial reasoning</strong>: would the participant rely on aggregate statistics or on a single personal testimony when making a decision?</li>
-                  <li><strong>Bowl-of-marbles / denominator neglect task</strong>: two bowls — one with 1 black marble + 9 white marbles ("10% chance" black), the other with 8 black marbles + 92 white marbles ("8% chance" black). Which bowl is more likely to yield a black marble on random draw? The correct answer is the FIRST bowl (10% &gt; 8%). Many adolescents (and even college students!) pick the SECOND bowl, lured by the larger absolute number of black marbles. This is <strong>denominator neglect</strong>.</li>
-                </ul>
-                <p>
-                  <strong>Sample</strong>: 166 adolescents tested at ages 12, 13, 14, and 15 (subset
-                  from a larger 8-12-year-old longitudinal sample). <strong>Design</strong>:
-                  correlational (relating analytic use to other variables, not testing age
-                  differences). <strong>Ethics</strong>: standard IRB approval; minimal risk.
-                </p>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Results — who reasons analytically?</h3>
-                </header>
-                <p>
-                  Overall, students used analytic solutions about <strong>75% of the time</strong> —
-                  analytic reasoning is typical but not universal in this age range. Correlations
-                  between analytic-solution use and other measured variables:
-                </p>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>Positive correlations</h4>
-                    <p>Adolescents who used analytic solutions MORE often had: (1) <strong>Better grades in school</strong>; (2) <strong>Higher verbal intelligence</strong>; (3) <strong>Higher non-verbal intelligence</strong>; (4) <strong>More open-minded thinking</strong> (agreement with items like "people should consider evidence that goes against their beliefs" and "it's OK to be undecided about some things").</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Negative correlation</h4>
-                    <p>Adolescents who used analytic solutions LESS often had: <strong>Higher belief in superstition</strong> (agreement with items like "I have things that bring me luck" and "it's a good idea to consult your horoscope").</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>What this means</h4>
-                    <p>Analytic problem-solving in adolescence is part of a broader cognitive profile: open-mindedness, low superstition, higher general intelligence, better academic performance. These tend to cluster — they're not independent traits but related expressions of a thinking style.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>The bigger framework</h4>
-                    <p>This study fits within <strong>dual-process theories</strong> of cognition: <em>System 1</em> (fast, automatic, heuristic) vs. <em>System 2</em> (slow, deliberate, analytic). Most thinking uses System 1 because it's efficient; System 2 is recruited when stakes are high or System 1 reaches its limit. The Toplak &amp; Flora findings suggest that even when System 2 reasoning is needed, some adolescents are more likely to engage it than others — and this is partly trained (analytic education, open-mindedness modeling) and partly dispositional.</p>
-                  </div>
-                </div>
-                <div class="finding-card">
-                  <h4>Implications</h4>
-                  <p>(1) <strong>Teaching matters</strong>: analytic reasoning can be cultivated, particularly through teaching statistical thinking and explicit instruction in recognizing common biases. Programs explicitly teaching critical thinking and statistical reasoning improve performance. (2) <strong>Open-mindedness matters</strong>: modeling and rewarding open-mindedness — willingness to revise beliefs, to say "I don't know," to consider evidence against one's position — supports analytic reasoning. (3) <strong>Clinical implications</strong>: when assessing adolescent decision-making competence (e.g., for medical decisions), look at HOW the patient reasons, not just intelligence. Open-mindedness and resistance to superstition matter. (4) <strong>Risk for misinformation</strong>: adolescents low on analytic reasoning may be more vulnerable to conspiracy theories, pseudoscience, and harmful online content. Media literacy education matters for health behavior.</p>
-                </div>
-              </article>
-            </div>
-
+            
             <div class="topic-group">
               <h3 class="topic-group-head">Content knowledge, strategies &amp; metacognitive skill</h3>
 
@@ -13829,11 +13613,11 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>How did they measure it?</h4>
-                  <p>The researchers searched the literature for studies that measured youth's ethnic-racial identity alongside four specific socialization practices: (a) <strong>Pride and heritage socialization</strong> — teaching culture, history, and heritage to promote pride. (b) <strong>Bias socialization</strong> — teaching children to anticipate and cope with discrimination. (c) <strong>Promotion of mistrust</strong> — warning children to be wary of people from other ethnic/racial groups. (d) <strong>Egalitarianism</strong> — emphasizing the value of mainstream culture.</p>
+                  <p>The researchers searched the literature for studies that measured youth's ethnic-racial identity alongside four specific socialization practices: (a) <strong>Pride and heritage socialization</strong> — teaching culture, history, and heritage to promote pride (e.g., "On Lunar New Year we honor our ancestors this way because…"). (b) <strong>Bias socialization</strong> — teaching children to anticipate and cope with discrimination (e.g., "Some people will treat you differently because of your race; here's what to do"). (c) <strong>Promotion of mistrust</strong> — warning children to be wary of people from other ethnic/racial groups. (d) <strong>Egalitarianism</strong> — emphasizing the value of mainstream culture and de-emphasizing ethnic-racial difference.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>Who participated &amp; what was the design?</h4>
-                  <p><strong>68 studies</strong>, <strong>14,329 total participants</strong> — 46% African American, 28% Latino/a, 39% high school students. The design was a <strong>meta-analysis</strong> of correlational studies (looking at links between parental practices and ethnic-racial identity). No ethical concerns — the questionnaires were standard.</p>
+                  <p><strong>68 studies</strong>, <strong>14,329 total participants</strong> — 46% African American, 28% Latino/a, 39% high school students. The design was a <strong>meta-analysis</strong> of correlational, cross-sectional studies (participants tested once, looking at links between parental practices and ethnic-racial identity). No ethical concerns — the questionnaires were standard.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What were the results?</h4>
@@ -13847,22 +13631,14 @@
                   <h4>What would strengthen the conclusions?</h4>
                   <p>The studies were correlational, so causation isn't established — perhaps youth's emerging interest in ethnic identity <em>prompts</em> parents to teach more about heritage (reverse causation). Longitudinal studies that track the direction of influence over time would clarify the causal pathway. Experimental interventions training parents in pride-and-heritage socialization could also test the causal claim directly.</p>
                 </div>
+                <div class="sr-qa-item">
+                  <h4>Why this matters — clinical and nursing implications</h4>
+                  <p><strong>Pride and heritage socialization is the most powerful identity-builder</strong>: ongoing family conversations about culture, history, traditions, and language matter, not just holidays. <strong>Bias socialization protects mental health</strong> — youth not prepared for discrimination are more likely to internalize it. <strong>Mistrust socialization is a trade-off</strong>, protective in hostile contexts but less helpful in safer ones. <strong>Egalitarianism alone is insufficient</strong>: "we don't see race" doesn't help youth process the race-related experiences they actually have. <strong>For nursing practice with multicultural families</strong>: don't assume ethnic-racial identity is fully formed (exploration is part of healthy development); ask about family conversations around race and identity; connect families to cultural community centers, heritage-language classes, and mentorship programs; and recognize that interracial adoptive families may need extra resources to support the child's ethnic-racial identity.</p>
+                </div>
               </div>
             </aside>
 
-            <aside class="wdyt-card">
-              <p class="wdyt-label">What Do You Think? · Life Imprisonment Without Parole for Adolescents</p>
-              <p class="wdyt-stem">
-                In 2016, approximately <strong>2,800 Americans — about 60% of them African American</strong> — were serving life-without-parole sentences for crimes committed as juveniles. Three Supreme Court cases have transformed this: <strong>Roper v. Simmons (2005)</strong> ruled capital punishment of adolescents unconstitutional, citing immature brain development. <strong>Miller v. Alabama (2012)</strong> used the same reasoning to declare mandatory juvenile life-without-parole sentences cruel and unusual punishment. <strong>Montgomery v. Louisiana (2016)</strong> made Miller retroactive, requiring resentencing for everyone already serving such sentences. Reviewing judges must now consider: age and immaturity at the time, family/home environment, circumstances of the crime, ability to deal with police and counsel, prison conduct, and likelihood of rehabilitation. About 50% have had sentences reduced; 25% have been released.
-              </p>
-              <ul>
-                <li>Imagine you're a judge reviewing a case like James's (impulsive 15-year-old, friend pulled the trigger, hours of unsupported police questioning). How would each of the six factors apply?</li>
-                <li>What does the adolescent brain research (maturity gap, prefrontal development through mid-20s) imply about criminal responsibility?</li>
-                <li>How does the over-representation of African American juveniles (60% of 2,800) intersect with the broader research on identity development and discrimination?</li>
-                <li>Should rehabilitation programs in juvenile incarceration be informed by what we know about identity development, career exploration, and education?</li>
-              </ul>
-            </aside>
-
+            
             <aside class="mid-read"
               data-fc-id="fc-ch9-ethnic-identity-protective"
               data-fc-ch="9"
@@ -13952,71 +13728,7 @@
             </aside>
             </div>
 
-            <div class="topic-group">
-              <h3 class="topic-group-head">Spotlight on Research — Huguley et al. (2019) ethnic-racial socialization</h3>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">The question and approach</h3>
-                </header>
-                <p>
-                  <strong>The investigators</strong>: James Huguley, Ming-Te Wang, Ariana Vasquez,
-                  and Jiesi Guo (2019). <strong>The aim</strong>: to identify which specific
-                  ethnic-racial socialization practices by parents most strongly foster their
-                  children's ethnic-racial identity.
-                </p>
-                <p>
-                  <strong>Method</strong>: a <em>meta-analysis</em> — synthesizing results across
-                  many studies on the same question (see Ch 1 for meta-analysis methodology).
-                </p>
-                <ul>
-                  <li><strong>Studies included</strong>: 68 studies meeting inclusion criteria</li>
-                  <li><strong>Total participants</strong>: 14,329 youth (46% African American, 28% Latino/a, 39% high school students)</li>
-                  <li><strong>Design</strong>: <em>correlational</em> (examining links between parenting and identity) and <em>cross-sectional</em> (participants tested only once)</li>
-                </ul>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Four ethnic-racial socialization practices examined</h3>
-                </header>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>Pride and heritage socialization</h4>
-                    <p>Parenting that promotes pride by teaching youth about culture, history, and heritage. Example: "On Lunar New Year we honor our ancestors this way because..." <strong>Strongest correlation with established ethnic-racial identity</strong> (Huguley et al., 2019).</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Bias socialization</h4>
-                    <p>Parenting that teaches children to anticipate and cope with discrimination. Example: "Some people will treat you differently because of your race; here's what to do." Moderate positive correlation with identity. Prepares youth for what they'll face.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Promotion of mistrust</h4>
-                    <p>Parenting that warns children to be wary of people from other ethnic or racial groups. Weak or no relationship with established ethnic-racial identity. Can be protective in dangerous contexts but doesn't promote identity formation directly.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Egalitarianism</h4>
-                    <p>Parenting that emphasizes the value of mainstream culture and de-emphasizes ethnic-racial difference. Weakest correlation with established ethnic-racial identity. Doesn't undermine identity but doesn't build it either.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Clinical implications</h3>
-                </header>
-                <ul>
-                  <li><strong>Pride and heritage socialization is the most powerful identity-builder</strong>. Family conversations about culture, history, traditions, and language matter — ongoing, not just at holidays.</li>
-                  <li><strong>Bias socialization protects mental health</strong>. Youth not prepared for discrimination are more likely to internalize it.</li>
-                  <li><strong>Mistrust socialization is a trade-off</strong>. Protective in hostile contexts; less helpful in safer ones.</li>
-                  <li><strong>Egalitarianism alone is insufficient</strong>. "We don't see race" doesn't help youth process the race-related experiences they actually have.</li>
-                </ul>
-                <div class="finding-card">
-                  <h4>For nursing practice with multicultural families</h4>
-                  <p>(1) Don't assume ethnic-racial identity is fully formed — many adolescents are still working through it. (2) Recognize that exploration is part of healthy development. (3) Ask about family conversations around race and identity. (4) Connect families to cultural community centers, heritage language classes, mentorship programs. (5) Recognize interracial adoptive families may need additional resources to support the adopted child's ethnic-racial identity.</p>
-                </div>
-              </article>
-            </div>
-
+            
             <div class="topic-group">
               <h3 class="topic-group-head">The myth of storm and stress</h3>
 
@@ -14661,6 +14373,18 @@
                   <li><strong>Reentry support</strong>. Adolescents released from incarceration face employment, education, housing, mental health, and substance use challenges. Without support, recidivism is high. Healthcare access at reentry matters.</li>
                   <li><strong>Advocacy</strong>. Nurses can advocate for evidence-based juvenile justice — diversion programs, restorative justice, treatment over incarceration, raising the minimum age for adult court transfer.</li>
                   <li><strong>For the field</strong>: Forensic nursing as a specialty intersects directly with these issues. Standards continue to evolve.</li>
+                </ul>
+              </article>
+
+              <article class="condition-block">
+                <header class="condition-head">
+                  <h3 class="condition-name">What the textbook asks</h3>
+                </header>
+                <ul>
+                  <li>Reviewing a case like James's, how would each of the six <em>Miller</em> factors apply (age and immaturity, family/home environment, circumstances of the crime, ability to deal with police and counsel, prison conduct, likelihood of rehabilitation)?</li>
+                  <li>What does adolescent brain research — the maturity gap and prefrontal development continuing into the mid-20s — imply about criminal responsibility?</li>
+                  <li>How does the over-representation of African American juveniles (about 60% of the 2,800) intersect with what this chapter covers on identity development and discrimination?</li>
+                  <li>Should rehabilitation programs in juvenile incarceration be informed by what we know about <strong>identity development, career exploration, and education</strong>?</li>
                 </ul>
               </article>
             </div>
@@ -15567,6 +15291,19 @@
                   <li><strong>Examine your own practice</strong>: track outcomes by patient race, language, insurance. Disparities you don't measure can't be addressed.</li>
                 </ul>
               </article>
+
+              <article class="condition-block">
+                <header class="condition-head">
+                  <h3 class="condition-name">What the textbook asks</h3>
+                </header>
+                <ul>
+                  <li>What examples of healthcare disparities exist in your own region, and what policy approaches could address them?</li>
+                  <li>How could medical schools and training institutions reduce disparities — implicit-bias training, diverse faculty, community-based rotations, language-access requirements?</li>
+                  <li>What structural changes would elimination require — insurance, hospital location, transportation, <strong>paid sick leave</strong>?</li>
+                  <li>These disparities became far more visible during the <strong>COVID-19 pandemic</strong>. Why, and what did that reveal?</li>
+                  <li>How does the cognitive-aging literature (the Seattle Longitudinal Study) intersect with healthcare disparities, given that disadvantaged older adults face both higher rates of pathological decline <em>and</em> worse access to care?</li>
+                </ul>
+              </article>
             </div>
           </section>
 
@@ -15676,28 +15413,20 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>What were the results?</h4>
-                  <p>Three major findings: (1) <strong>Intellectual abilities improve gradually until the late 30s or early 40s</strong>, with small declines beginning in the 50s, increasing in the 60s, and becoming larger in the 70s. (2) <strong>Cohort effects exist</strong> — more recently born cohorts performed better than earlier ones on some skills (especially inductive reasoning), likely reflecting differences in educational experiences. (3) <strong>Substantial individual variation</strong> — some people declined steadily, others declined in some abilities but not others, and some showed little change over 14-year spans. <strong>Processing speed</strong> was the single best predictor of performance across primary mental abilities, especially in later life.</p>
+                  <p>Three major findings: (1) <strong>Intellectual abilities improve gradually until the late 30s or early 40s</strong>, with small declines beginning in the 50s, increasing in the 60s, and becoming larger in the 70s. (2) <strong>Cohort effects exist</strong> — more recently born cohorts performed better than earlier ones on some skills (especially inductive reasoning), likely reflecting differences in educational experiences. (3) <strong>Substantial individual variation</strong> — some people declined steadily, others declined in some abilities but not others, and some showed little change over 14-year spans. <strong>Processing speed</strong> was the single best predictor of performance across primary mental abilities, especially in later life (Hülür et al., 2016) — when processing speed slows, multiple abilities decline together, converging with the Ch 8 finding that processing speed reaches adult levels in mid-adolescence.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What did Schaie conclude?</h4>
-                  <p>Adult intellectual development is marked by: (1) gradual <strong>leveling off</strong> of gains between young adulthood and middle age; (2) a period of relative <strong>stability</strong>; (3) eventual <strong>gradual decline</strong> that accelerates in the 70s and beyond. Cohort effects and individual differences mean that "average aging" obscures substantial variation. The work was foundational in distinguishing <em>normal aging</em> from <em>pathological decline</em>, and in showing that midlife cognition is generally stable rather than declining.</p>
+                  <p>Adult intellectual development is marked by: (1) gradual <strong>leveling off</strong> of gains between young adulthood and middle age; (2) a period of relative <strong>stability</strong>; (3) eventual <strong>gradual decline</strong> that accelerates in the 70s and beyond. Cohort effects and individual differences mean that "average aging" obscures substantial variation — someone aged 60 in 2012 wasn't just "60" but also a person born in 1952 with very different schooling than someone aged 60 in 1956 (born 1896). The work was foundational in distinguishing <em>normal aging</em> from <em>pathological decline</em>, and in showing that midlife cognition is generally stable rather than declining.</p>
+                </div>
+                <div class="sr-qa-item">
+                  <h4>What are the limits, and what does this mean for nursing practice?</h4>
+                  <p><strong>Limits</strong>: participants were Seattle residents from a single HMO — geographically and socioeconomically narrow (upper 75% of SES); cross-cultural replication and broader recruitment across economic backgrounds and healthcare-access levels would strengthen the conclusions. <strong>For nursing practice with aging patients</strong>: (1) don't expect uniform cognitive decline at any specific age — chronological age alone doesn't predict function; (2) most adults retain robust cognitive ability through their 60s, with meaningful declines typically not appearing until the 70s, so the "old age = decline" stereotype is overdrawn; (3) <strong>processing speed matters most</strong> — patients with slower processing benefit from more time, written reinforcement, breaks during teaching, and avoiding cognitive overload; (4) cohort differences are real, so don't equate being old now with the experience awaiting today's younger adults; (5) <strong>crystallized intelligence</strong> (lifelong accumulated knowledge) is largely preserved into old age — older patients remain capable of complex understanding and mainly need accommodations for fluid reasoning and speed; (6) an engaged lifestyle (complex work, education, social engagement, physical activity) predicts better cognitive preservation.</p>
                 </div>
               </div>
             </aside>
 
-            <aside class="wdyt-card">
-              <p class="wdyt-label">What Do You Think? · Healthcare Disparities</p>
-              <p class="wdyt-stem">
-                US healthcare access depends heavily on socioeconomic status, ethnicity, and education. According to the <em>National Healthcare Disparities Report</em> (Agency for Healthcare Research and Quality, 2021), many Americans — especially Americans of color — don't receive needed care, and sometimes receive care that causes harm. <strong>Lower-income groups receive worse care than higher-income groups on 60% of quality indicators</strong>. The most troubling disparities apply to diabetes care, maternal and pediatric care, and cancer care. These disparities became <strong>more visible during the COVID-19 pandemic</strong>. Despite some Affordable Care Act improvements, many aspects of disparity have not improved. By the time disadvantaged patients reach care, they're typically much sicker — making treatment more difficult and expensive.
-              </p>
-              <ul>
-                <li>What examples of healthcare disparities exist in your region? What policy approaches could address them?</li>
-                <li>How could medical schools and related training institutions reduce healthcare disparities? (Implicit bias training, diverse faculty, community-based training rotations, language-access requirements?)</li>
-                <li>How could healthcare disparities be eliminated? What structural changes (insurance, hospital location, transportation, paid sick leave) would be required?</li>
-                <li>How does the cognitive aging literature (Seattle Longitudinal Study) intersect with healthcare disparities — given that disadvantaged older adults face both higher rates of pathological decline AND worse access to care?</li>
-              </ul>
-            </aside>
-
+            
             <aside class="mid-read"
               data-fc-id="fc-ch10-fluid-crystallized-distinction"
               data-fc-ch="10"
@@ -15767,101 +15496,7 @@
             </aside>
             </div>
 
-            <div class="topic-group">
-              <h3 class="topic-group-head">Spotlight on Research — the Seattle Longitudinal Study (Schaie)</h3>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">The investigator and aim</h3>
-                </header>
-                <p>
-                  <strong>K. Warner Schaie</strong> began the <strong>Seattle Longitudinal
-                  Study</strong> in 1956 as his dissertation research. The aim was to provide a more
-                  thorough picture of intellectual change across adulthood than cross-sectional
-                  snapshots could provide. The study would become one of the most influential and
-                  long-running studies of adult cognitive development in psychology.
-                </p>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Method, design, and participants</h3>
-                </header>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>What was measured</h4>
-                    <p>Schaie used standardized tests of <strong>primary mental abilities</strong> — including <em>logical reasoning</em>, <em>spatial ability</em>, <em>inductive reasoning</em>, <em>verbal meaning</em>, <em>word fluency</em>, and <em>number ability</em>. These cover a wide range of intellectual functions.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Participants</h4>
-                    <p>Over <strong>5,000 individuals</strong> were tested at nine different times over 56 years (1956, 1963, 1970, 1977, 1984, 1991, 1998, 2005, 2012). Recruited through a large health maintenance organization in Seattle, representative of the upper 75% of the socioeconomic spectrum.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>The novel design — sequential</h4>
-                    <p>Schaie <strong>invented a new research design — the <em>sequential design</em></strong> — for this project (see Ch 1). Sequential designs combine cross-sectional and longitudinal approaches: each cohort is followed longitudinally while new cohorts are added periodically. This separates age effects from cohort effects — a crucial methodological advance that pure longitudinal or cross-sectional studies can't achieve.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Ethical considerations</h4>
-                    <p>Because participants' names had to be retained for future contact across decades, researchers carefully secured personal information. Participants were always free to withdraw. Cross-decade longitudinal studies present unique data protection challenges that contemporary IRBs scrutinize carefully.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Key findings</h3>
-                </header>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>The general trajectory</h4>
-                    <p>Scores on tests of primary mental abilities <strong>improve gradually until the late 30s or early 40s</strong>, then plateau, then show <strong>small declines beginning in the 50s</strong> that <strong>increase as people age into their 60s</strong> and become <strong>increasingly large in the 70s</strong>. The "cliff of decline" that older cross-sectional studies suggested in middle age was an artifact — there's gradual change, not a cliff.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Cohort effects matter</h4>
-                    <p>On some skills (e.g., <em>inductive reasoning</em>) but not others, <strong>more recently born cohorts performed better than earlier cohorts</strong>. These cohort effects probably reflect differences in educational experiences. Translation: someone aged 60 in 2012 wasn't just "60" — they were also a 1952-born person with very different schooling than someone aged 60 in 1956 (who was 1896-born).</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Individual differences are large</h4>
-                    <p>Some people showed steady decline beginning in their 40s and 50s. Others showed declines in some abilities but not others. Others showed little change in most abilities over 14-year periods. The "average" trajectory hides enormous individual variation — and that variation is the rule, not the exception.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Processing speed as the master predictor</h4>
-                    <p>The speed with which people process information <strong>predicted scores across most primary mental abilities, especially in later life</strong> (Hülür et al., 2016). When processing speed slows, multiple cognitive abilities decline together. This converges with younger-age findings (Ch 8) that processing speed reaches adult levels in mid-adolescence — it's a foundational cognitive resource at every life stage.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">What Schaie concluded</h3>
-                </header>
-                <p>
-                  Three points emerged:
-                </p>
-                <ol>
-                  <li><strong>Intellectual development during adulthood is marked by a gradual leveling off of gains between young adulthood and middle age, followed by a period of relative stability, then a time of gradual decline.</strong> Not a cliff. Not uniform decline from age 30.</li>
-                  <li><strong>These trends vary from one cohort to another.</strong> Generation matters — the same chronological age can mean different things in different historical periods.</li>
-                  <li><strong>Individual patterns of change vary considerably from person to person and across different primary abilities.</strong> Group averages mask wide individual variability.</li>
-                </ol>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Limits and converging evidence needed</h3>
-                </header>
-                <p>
-                  Even the Seattle Longitudinal Study has limits. Participants were Seattle residents
-                  from a single HMO — geographically and socioeconomically narrow. Cross-cultural
-                  replication, comparison across different economic backgrounds and healthcare access
-                  levels, and broader recruitment would strengthen and refine the conclusions.
-                </p>
-                <div class="finding-card">
-                  <h4>For nursing practice — what the SLS means for aging patients</h4>
-                  <p>(1) <strong>Don't expect uniform cognitive decline at any specific age</strong>. Individual differences are huge; chronological age alone doesn't predict cognitive function. (2) <strong>Most adults retain robust cognitive ability through their 60s</strong>; meaningful declines typically don't appear until the 70s for most people. The "old age = cognitive decline" stereotype is overdrawn. (3) <strong>Processing speed matters most</strong> — patients with slower processing benefit from more time, written reinforcement, breaks during teaching, and avoiding cognitive overload. (4) <strong>Cohort differences are real</strong> — today's 80-year-olds had different educational opportunities than today's 30-year-olds. Don't equate the experience of being old now with the experience that will await today's younger adults. (5) <strong>Crystallized intelligence (knowledge accumulated over life) is largely preserved through old age</strong> — older patients are not less capable of complex understanding; they may need accommodations for fluid reasoning and processing speed. (6) <strong>Engaged lifestyle matters</strong> — Schaie's later analyses suggest that complex work, education, social engagement, and physical activity all predict better cognitive preservation.</p>
-                </div>
-              </article>
-            </div>
-          </section>
+                      </section>
 
           <!-- TAB 5: 10.4 Personality -->
           <section id="ch10-personality" class="content-section">
@@ -16690,7 +16325,7 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>How did they measure attachment?</h4>
-                  <p>The <strong>Relationship Questionnaire</strong> — a 2-dimensional, 4-category measure based on <em>model of self</em> and <em>model of others</em>: <strong>Secure</strong> (positive model of self + positive model of others), <strong>Dismissing</strong> (positive self + negative others), <strong>Preoccupied</strong> (negative self + positive others), <strong>Fearful</strong> (negative self + negative others). Great care was taken to ensure equivalent translations across the cultural regions. They also measured self-esteem, personality, and sociocultural correlates (fertility rate, individualism vs. collectivism).</p>
+                  <p>The <strong>Relationship Questionnaire</strong> — Bartholomew &amp; Horowitz's 2-dimensional, 4-category model based on <em>model of self</em> and <em>model of others</em>: <strong>Secure</strong> (positive model of self + positive model of others), <strong>Dismissing</strong> (positive self + negative others), <strong>Preoccupied</strong> (negative self + positive others), <strong>Fearful</strong> (negative self + negative others). Great care was taken to ensure equivalent translations across the cultural regions. They also measured self-esteem, personality, and sociocultural correlates (fertility rate, individualism vs. collectivism).</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>Who participated &amp; what was the design?</h4>
@@ -16698,7 +16333,7 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>What were the results?</h4>
-                  <p>Two clear findings: (1) <strong>Secure attachment was the norm in 79% of cultural groups</strong> — the global majority pattern. (2) <strong>Distinct regional patterns emerged</strong>. <strong>North American cultures</strong> tended toward <em>dismissing</em> attachment (positive self, negative others). <strong>East Asian cultures</strong> tended toward <em>preoccupied</em> attachment (negative self, positive others) — meaning East Asian respondents more often felt that others didn't get as emotionally close as they would like, and reported difficulty trusting others or depending on them. Notably, in <strong>every region except East Asia</strong>, model-of-self scores were higher than model-of-others scores.</p>
+                  <p>Two clear findings: (1) <strong>Secure attachment was the norm in 79% of cultural groups</strong> — the global majority pattern. (2) <strong>Distinct regional patterns emerged</strong>. <strong>North American cultures</strong> tended toward <em>dismissing</em> attachment (positive self, negative others). <strong>East Asian cultures</strong> tended toward <em>preoccupied</em> attachment (negative self, positive others) — meaning East Asian respondents more often felt that others didn't get as emotionally close as they would like, and reported difficulty trusting others or depending on them. Notably, in <strong>every region except East Asia</strong>, model-of-self scores were higher than model-of-others scores. National attachment profiles also <strong>correlated with sociocultural indicators</strong> (e.g., fertility rate, individualism vs. collectivism) in ways supporting evolutionary theories of attachment and human mating strategies — some cultural variation appears to reflect deeper adaptive responses to environments.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What did the investigators conclude?</h4>
@@ -16707,6 +16342,10 @@
                 <div class="sr-qa-item">
                   <h4>What would strengthen the conclusions?</h4>
                   <p>The study didn't dig deep into other diversity dimensions. <strong>Age</strong> wasn't critically examined — do attractive characteristics change with age across cultures? <strong>Multicultural identity</strong> — individuals from more than one cultural heritage would be valuable to study to understand how heritage cultures interact.</p>
+                </div>
+                <div class="sr-qa-item">
+                  <h4>Converging evidence and clinical implications</h4>
+                  <p><strong>Thomas et al. (2020)</strong> asked an international sample of ~2,500 people to design an ideal long-term mate, finding clear cultural differences across many dimensions but a shared prioritization of traits fundamental for reproductive success — cultural variation overlays a base of evolutionary universals. <strong>Clinically</strong>: when working across cultures, recognize that attachment patterns and relationship expectations vary, but core relationship needs (closeness, dependability, emotional safety) are universal. East Asian patients may communicate distress about closeness in patterns that look "preoccupied" to Western-trained clinicians but are <em>cultural rather than pathological</em>. Don't assume Western attachment categories apply identically to East Asian, South Asian, African, or Latin American patients; ask about expectations of closeness, support, and dependence in the patient's own cultural frame; expect that mismatched cultural norms can create friction for cross-cultural couples; recognize that attachment-promoting postpartum/pediatric interventions developed for US samples may need cultural adaptation; and for LGBTQ+ patients, be careful about assumptions in either direction as minority status interacts with cultural norms.</p>
                 </div>
               </div>
             </aside>
@@ -16793,71 +16432,7 @@
             </aside>
             </div>
 
-            <div class="topic-group">
-              <h3 class="topic-group-head">Spotlight on Research — romantic attachment around the world (Schmitt et al., 2004)</h3>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">The investigators and aim</h3>
-                </header>
-                <p>
-                  <strong>David Schmitt</strong> assembled a large international team of researchers
-                  to test the hypothesis that adult romantic attachment patterns extend across
-                  cultures. Aim: determine whether attachment styles documented in Western samples
-                  (Bartholomew &amp; Horowitz's four-category model — secure, preoccupied, dismissive,
-                  fearful) generalize globally.
-                </p>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Method and findings</h3>
-                </header>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>Massive cross-cultural sample</h4>
-                    <p><strong>62 cultural regions</strong> — one of the largest cross-cultural psychology studies ever conducted. Participants were adult volunteers from each region. Translations carefully validated; measures of "model of self" and "model of others" verified across cultural regions.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>The big finding — secure attachment is the norm</h4>
-                    <p><strong>Secure romantic attachment was the norm in nearly 80% of cultures studied.</strong> This is striking evidence that secure attachment isn't culturally specific to Western, individualistic societies — it's the dominant adult attachment pattern across most of the world.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>The notable exception — East Asia</h4>
-                    <p><strong>Preoccupied attachment was particularly common in East Asian cultures</strong>. East Asian respondents tended to report that others don't get as emotionally close as they would like, and difficulty trusting others or depending on them. This pattern fits research on East Asian relational norms emphasizing interdependence with selectivity, harmony over self-expression.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Evolutionary correlates</h4>
-                    <p>National romantic-attachment profiles correlated with sociocultural indicators in ways supporting evolutionary theories of attachment and human mating strategies. Some cultural variation reflects deeper adaptive responses to environments.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Converging evidence and implications</h3>
-                </header>
-                <p>
-                  <strong>Thomas et al. (2020)</strong> — international sample of ~2,500 people asked
-                  to design an ideal long-term mate. Found clear cultural differences across dimensions,
-                  but traits fundamental for reproductive success were prioritized across all cultures.
-                  Cultural variation overlays a base of evolutionary universals.
-                </p>
-                <p>
-                  <strong>What this means clinically</strong>: when working with patients from
-                  different cultural backgrounds, recognize that attachment patterns and relationship
-                  expectations vary — but that core relationship needs (closeness, dependability,
-                  emotional safety) are universal. East Asian patients may communicate distress about
-                  closeness in patterns that look "preoccupied" to Western-trained clinicians but are
-                  cultural rather than pathological.
-                </p>
-                <div class="finding-card">
-                  <h4>Specific clinical implications</h4>
-                  <p>(1) Don't assume attachment categories developed in Western samples apply identically to East Asian, South Asian, African, Latin American patients. (2) Ask about expectations of closeness, support, and dependence in patients' own cultural frame. (3) For cross-cultural couples, recognize that mismatched attachment cultural norms can create relationship friction. (4) Postpartum and pediatric care: attachment-promoting interventions developed for US samples may need cultural adaptation. (5) For LGBTQ+ patients across cultures, sexual and gender minority status interacts with cultural norms — be careful about assumptions either way.</p>
-                </div>
-              </article>
-            </div>
-
+            
             <div class="topic-group">
               <h3 class="topic-group-head">Linking Research to Life — the Violence Against Women Act (VAWA)</h3>
 
@@ -18214,6 +17789,18 @@
                   <p>Filipino nurses face specific workplace dynamics in US healthcare. (1) Historical immigration patterns: large Filipino nurse migration to US since 1960s; many nurses on H1B or EB-3 visas have less leverage to push back against unfair treatment. (2) "Cultural" framing of patience/deference can be used to keep Filipino nurses in less desirable shifts and roles. (3) Language and accent discrimination is documented even when English fluency is excellent. (4) Higher representation in critical care and bedside roles, lower in leadership — partly bias, partly self-selection, partly visa-related barriers. (5) Filipino nurse organizations (Philippine Nurses Association of America, PNAA) advocate for representation, pay equity, and against pandemic-era scapegoating (PNAA documented anti-Asian harassment of Filipino nurses during COVID-19). Mark — being aware of this context positions you to advocate for yourself and Filipino colleagues throughout your career.</p>
                 </div>
               </article>
+
+              <article class="condition-block">
+                <header class="condition-head">
+                  <h3 class="condition-name">What the textbook asks</h3>
+                </header>
+                <ul>
+                  <li>How should employers ensure compliance with anti-discrimination laws — and go <em>beyond</em> minimum legal requirements?</li>
+                  <li>Thinking about your own program or a workplace you've been in, what could increase <strong>diversity AND equity AND inclusion</strong> (the three are distinct)?</li>
+                  <li>How could a hospital or healthcare workplace be genuinely inclusive — for both staff <em>and</em> patients from marginalized backgrounds?</li>
+                  <li>The pandemic disproportionately drove women, especially Black women, out of the workforce. What structural changes would prevent this in the next crisis?</li>
+                </ul>
+              </article>
             </div>
           </section>
 
@@ -18652,11 +18239,11 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>Who participated &amp; what was the design?</h4>
-                  <p><strong>Three international cohorts</strong>: Finnish Helsinki Health Study (HHS, N=5,958), British Whitehall II study (N=4,326), and Japanese Civil Servants Study (JACS, N=1,768). Participants ranged from <strong>ages 20 to 60</strong>. The design was <strong>longitudinal</strong> — strength: measures behavior over time in the same individuals; confound: age effects.</p>
+                  <p><strong>Three international cohorts</strong>: Finnish Helsinki Health Study (HHS, N=5,958; measured 2000–2002 and 2007), British Whitehall II study (N=4,326; 1997–1999 and 2003–2004), and Japanese Civil Servants Study (JACS, N=1,768; 1998–1999 and 2003). Participants ranged from <strong>ages 20 to 60</strong>. The design was <strong>longitudinal</strong> — strength: measures behavior over time in the same individuals; confound: cohort and historical effects confound with age.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What were the results?</h4>
-                  <p>Leisure physical activity was associated with <strong>better subsequent physical health functioning</strong> in all three cohorts. The clearest differences were among <strong>Finnish women</strong> (inactive: 46.0, active vigorous: 49.5) and <strong>men</strong> (inactive: 47.8, active vigorous: 51.1), and <strong>British women</strong> (inactive: 47.3, active vigorous: 50.4). For <strong>mental health</strong> functioning, differences were generally smaller and not clearly tied to physical-activity intensity.</p>
+                  <p>Leisure physical activity was associated with <strong>better subsequent physical health functioning</strong> in all three cohorts. The clearest differences were among <strong>Finnish women</strong> (inactive: 46.0, active vigorous: 49.5) and <strong>men</strong> (inactive: 47.8, active vigorous: 51.1), and <strong>British women</strong> (inactive: 47.3, active vigorous: 50.4). <strong>Vigorous</strong> activity was associated with better physical health than moderate or low-intensity activity — getting the heart rate up mattered. For <strong>mental health</strong> functioning, differences were generally smaller and not clearly tied to intensity, suggesting any movement may help mood while only vigorous movement substantially helps physical health. The pattern held in all three cohorts but varied in magnitude — strongest in the Finnish and British samples, with the Japanese results showing the same direction at smaller magnitudes, possibly reflecting cultural differences in leisure patterns.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What did the investigators conclude?</h4>
@@ -18666,22 +18253,14 @@
                   <h4>What would strengthen the conclusions?</h4>
                   <p>Participants came from only three relatively affluent countries. Results would likely differ in <strong>less financially well-off populations</strong> — who may not have the same opportunities for leisure activities (less safe neighborhoods, longer work hours, fewer recreational facilities). Equity considerations should be front-and-center in any leisure-promotion intervention.</p>
                 </div>
+                <div class="sr-qa-item">
+                  <h4>Why this matters — leisure-activity counseling</h4>
+                  <p>Don't just recommend "exercise" — recommend leisure activities patients will actually do (walking with friends, gardening, dancing, cycling, swimming, hiking). For <strong>physical health, intensity matters</strong>: encourage activities that consistently elevate heart rate (brisk walking counts; window shopping doesn't). For <strong>mental health, frequency matters more than intensity</strong> — any movement helps mood. Stay <strong>equity-aware</strong>: leisure requires time, energy, money, and safe spaces, so patients with multiple jobs, caregiving duties, or unsafe neighborhoods face structural barriers — don't moralize about "lack of motivation." A <strong>Filipino cultural framing</strong> helps here: family-based activities (badminton with siblings, walking with parents, dancing at family gatherings) can be reframed as healthy leisure built <em>into</em> family time rather than separate from it. Start where the patient is (10-minute walks for sedentary patients, building gradually). And for nurses themselves, shift work and emotional labor make leisure hard — schedule it like an appointment and protect it like patient-care time, since burnout reduction depends on it.</p>
+                </div>
               </div>
             </aside>
 
-            <aside class="wdyt-card">
-              <p class="wdyt-label">What Do You Think? · Creating an Inclusive Workplace</p>
-              <p class="wdyt-stem">
-                The annual <strong>Women in the Workplace</strong> studies consistently find that <strong>about 60% of respondents experience uncivil behavior at work</strong> — ranging from racial and ethnic slurs to sexual assault. Progress for women had been slow but real — <strong>until the pandemic</strong>. The 2020 Women in the Workplace report warned: <em>"All the progress we've seen since 2015 would be erased"</em> — women, especially Black women, left the workforce in record numbers due to the pandemic's differential impact on caregiving and frontline work. Beyond paid leave and dependent care support, building an inclusive workplace requires <strong>prioritizing diversity, refusing to tolerate biased behavior, and actively encouraging inclusion</strong>. Mozilla (creator of Firefox) created formal <em>Community Participation Guidelines</em> after employee focus groups — making explicit that the company won't tolerate violence, threats, derogatory language, unwelcome sexual attention, or disruptive behavior, with clear consequences.
-              </p>
-              <ul>
-                <li>How should employers ensure they're in compliance with anti-discrimination laws — beyond minimum legal requirements?</li>
-                <li>Think about your college program or a workplace you've been in. What could increase diversity AND equity AND inclusion (the three are distinct)?</li>
-                <li>How could a hospital or healthcare workplace ensure it is genuinely inclusive — for both staff AND patients from marginalized backgrounds?</li>
-                <li>The pandemic disproportionately drove women, especially Black women, out of the workforce. What structural changes would prevent this from happening in the next crisis?</li>
-              </ul>
-            </aside>
-
+            
             <aside class="mid-read"
               data-fc-id="fc-ch12-leisure-physical-health"
               data-fc-ch="12"
@@ -18751,97 +18330,7 @@
             </aside>
             </div>
 
-            <div class="topic-group">
-              <h3 class="topic-group-head">Spotlight on Research — long-term effects of leisure activities (Lahti et al., 2016)</h3>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">The question and approach</h3>
-                </header>
-                <p>
-                  <strong>The investigators</strong>: Jouni Lahti and colleagues (2016).
-                  <strong>The aim</strong>: physical activity is well-established as related to
-                  better health at all ages in adulthood, but most existing research had focused on
-                  <em>formal exercise programs</em>. Much less was known about <em>leisure-time
-                  physical activity</em> — and whether engaging in it during emerging adulthood
-                  affects subsequent health and well-being in midlife.
-                </p>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Method and participants</h3>
-                </header>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>The SF-36 health questionnaire</h4>
-                    <p>Investigators used the <strong>Short Form-36 (SF-36)</strong> health questionnaire to assess physical and mental health. SF-36 has eight subscales: physical functioning, role limitations due to physical problems, bodily pain, general health perceptions, mental health, role limitations due to emotional problems, social functioning, vitality. Scores range 0-100; high scores imply good functioning. The SF-36 has very good reliability and validity.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>International cohorts</h4>
-                    <p>The study combined participants from three established cohorts: <em>Finnish HHS Study</em> (2000-2002 and 2007, N≈5,958); <em>British WHII I Study</em> (1997-1999 and 2003-2004); <em>Japanese Civil Servants Study (JACS)</em> (1998-1999 and 2003). Participants were aged 20-60.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Longitudinal design</h4>
-                    <p>The same participants were measured at multiple time points. The strength of this approach: measures behavior over time in the same individuals. The limitation: cohort and historical effects confound with age.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Ethics</h4>
-                    <p>All participants were informed of the larger study's nature and gave consent. Standard for cohort studies of this type.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Key findings</h3>
-                </header>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>Leisure physical activity → better physical health</h4>
-                    <p>Leisure-time physical activity was associated with <strong>better subsequent physical health functioning scores in all three cohorts</strong>. Effect was clearest among Finnish women (inactive: 46.0, active vigorous: 49.5) and men (inactive: 47.8, active vigorous: 51.1) and British women (inactive: 47.3, active vigorous: 50.4).</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Intensity matters for physical health</h4>
-                    <p><strong>Vigorous activity was associated with better physical health</strong> than moderate or low-intensity activity. Not just any activity — getting your heart rate up matters.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Mental health effects are smaller</h4>
-                    <p>For mental health functioning, differences were generally <strong>smaller and not clearly related to the intensity of physical activity</strong>. Any movement may help mental health; only vigorous movement substantially helps physical health.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Some cross-cultural variation</h4>
-                    <p>While the pattern held in all three cohorts, magnitudes varied. Results were strongest in Finnish and British samples; Japanese results showed similar direction with smaller magnitudes. Cultural differences in leisure activity patterns may contribute.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Conclusions and what's missing</h3>
-                </header>
-                <p>
-                  Lahti and colleagues concluded that <strong>vigorous physical activity is
-                  associated with better subsequent physical health functioning</strong> in all three
-                  cohorts. For mental health, the intensity matters less — any movement may help.
-                  <strong>Promoting leisure-time physical activity may prove useful for maintaining
-                  health functioning among midlife employees.</strong>
-                </p>
-                <p>
-                  <strong>What converging evidence would strengthen these conclusions</strong>:
-                  participants came from only three countries — all relatively wealthy. Results might
-                  differ in less financially well-off populations. Those individuals may not have the
-                  opportunity to engage in leisure activities at the same rate as those in the study —
-                  raising both a methodological concern and an equity concern about access to health-
-                  promoting leisure.
-                </p>
-                <div class="finding-card">
-                  <h4>For nursing practice — leisure activity counseling</h4>
-                  <p>(1) <em>Don't just recommend "exercise"</em> — recommend leisure activities patients will actually do. Walking with friends, gardening, dancing, cycling, swimming, hiking. Whatever fits the patient's life. (2) <em>Intensity matters for physical health</em> — encourage activities that elevate heart rate consistently. Brisk walking counts; window shopping doesn't. (3) <em>For mental health, frequency matters more than intensity</em> — any movement helps mood. (4) <em>Equity awareness</em>: leisure activities require time, energy, money, safe spaces. Patients with multiple jobs, caregiving responsibilities, or unsafe neighborhoods face structural barriers. Don't moralize about "lack of motivation." (5) <em>Filipino cultural framing</em>: family-based activities (badminton with siblings, walking with parents, dancing at family gatherings) can be reframed as healthy leisure — not separate from family time but built into it. (6) <em>Start where the patient is</em>: 10-minute walks for sedentary patients; gradual building. (7) <em>For nurses ourselves</em>: shift work, fatigue, and emotional labor make leisure activity hard. Schedule it like an appointment; protect it like patient care time. Burnout reduction depends on it.</p>
-                </div>
-              </article>
-            </div>
-          </section>
+                      </section>
 
           <!-- KEY STUDIES & RESEARCHERS — chapter 12 -->
           <section id="ch12-studies" class="content-section">
@@ -19626,6 +19115,18 @@
                   <li><strong>Watch your own profession</strong>: nurses, physicians, and pharmacists have elevated rates of substance use disorders related to access. Peer support programs (HPRP - Healthcare Professional Recovery Programs) help colleagues without ending careers.</li>
                 </ul>
               </article>
+
+              <article class="condition-block">
+                <header class="condition-head">
+                  <h3 class="condition-name">What the textbook asks</h3>
+                </header>
+                <ul>
+                  <li>How does the opioid crisis affect different demographic groups in <em>your</em> community?</li>
+                  <li>What resources exist to address opioid overdoses in your area, and how accessible are they?</li>
+                  <li>What action steps would you recommend for healthcare systems, public health, and individual clinicians?</li>
+                  <li>How did racial disparities in pain treatment create the unusual pattern of European Americans being <em>disproportionately</em> affected by the prescription-opioid crisis?</li>
+                </ul>
+              </article>
             </div>
           </section>
 
@@ -19720,7 +19221,7 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>Who participated &amp; what was the design?</h4>
-                  <p><strong>7 adults aged 21–56</strong> in the Clearwater Academy (US Midwest) during spring 2017. Six were African American and one identified as "African and American" (born in Sudan). Clearwater Academy is part of a nonprofit addressing racism and poverty; it teaches low-income people of color front-end web development (HTML, CSS, JavaScript) and soft skills in a 3.5-month program (8 hours/day, 4 days/week). The design was a <strong>qualitative study</strong> — no ethical concerns; participants were appropriately informed.</p>
+                  <p><strong>7 adults aged 21–56</strong> in the Clearwater Academy (US Midwest) during spring 2017. Six were African American and one identified as "African and American" (born in Sudan). Clearwater Academy is part of a nonprofit addressing racism and poverty; it teaches low-income people of color front-end web development (HTML, CSS, JavaScript) and soft skills in a 3.5-month program (8 hours/day, 4 days/week), and supports job-market success by connecting students to professionals, teaching résumé and cover-letter writing, elevator pitches, and mock interviews. The design was a <strong>qualitative study</strong> — no ethical concerns; participants were appropriately informed.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What were the results?</h4>
@@ -19728,28 +19229,20 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>What did Byrd conclude?</h4>
-                  <p>The data <strong>refute the notion that African Americans lack interest or have "technophobia."</strong> Instead, the digital-literacy life histories showed that <em>tinkering and discovery</em>, both with computers and in other settings, may provide significant support for achieving coding literacy. Informal, community-supported learning is a real and underrecognized pathway to formal technical competence. The implication: workforce development programs that build on informal literacies and community supports — rather than assuming a deficit — can be more effective.</p>
+                  <p>The data <strong>refute the notion that African Americans lack interest or have "technophobia."</strong> Instead, the digital-literacy life histories showed that <em>tinkering and discovery</em>, both with computers and in other settings, may provide significant support for achieving coding literacy. Informal, community-supported learning is a real and underrecognized pathway to formal technical competence. In short, <strong>the barrier was access, not capacity</strong>: the Academy provided what mainstream education hadn't — structured opportunity, community support, and the time and space to formalize informal learning already underway. The implication: workforce development programs that build on informal literacies and community supports, rather than assuming a deficit, can be more effective.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What would strengthen the conclusions?</h4>
                   <p>Future research should include people at different levels of expertise, a wider age range, and participants from other racial and cultural backgrounds — to deepen understanding of how formal and informal learning interact across communities.</p>
                 </div>
+                <div class="sr-qa-item">
+                  <h4>Why this matters — nursing, health literacy, and workforce development</h4>
+                  <p><strong>Recognize informal learning as legitimate</strong>: "no formal training" doesn't mean "no knowledge." Patients often learn about their conditions by tinkering with information — websites, forums, family experience, trial and error — so engage with what they already know ("what have you learned about this?") rather than starting from scratch, which is more effective patient education. <strong>Workforce diversification</strong>: nursing pathways increasingly include accelerated and bridge programs and apprenticeship models that give structured opportunity to people with non-traditional backgrounds. Practice <strong>cultural humility about expertise</strong>: the family member who has managed a grandmother's diabetes for years has real expertise worth respecting. And midlife transitions into nursing that bring knowledge from other domains are common and valuable — the "tinkering and discovery" patterns from other parts of life transfer.</p>
+                </div>
               </div>
             </aside>
 
-            <aside class="wdyt-card">
-              <p class="wdyt-label">What Do You Think? · The Opioid Crisis</p>
-              <p class="wdyt-stem">
-                Between June 2019 and June 2020, <strong>over 83,000 people in the United States died from opioid-related overdoses</strong> — including prescription opioids, heroin, and illicitly-manufactured fentanyl. Roughly <strong>1.7 million</strong> people suffered from substance use disorders related to prescription opioids. <strong>For people under age 50, drug overdoses are the most common cause of accidental death</strong>. Because nearly all who became dependent first received opioids from a <strong>physician</strong>, and because of documented racial disparities in pain treatment, the crisis is much more common among European Americans than other racial/ethnic groups. <strong>Rural populations</strong> have been hit disproportionately hard — about 50% of rural residents and 75% of farm families have been directly affected. <strong>Naloxone (NarCan)</strong> and <strong>buprenorphine</strong> are available but unevenly accessible. Research consistently shows <strong>very little evidence</strong> for the long-term effectiveness of opioids for chronic non-cancer pain (Chou et al., 2014) — yet the prescriptions continued for years.
-              </p>
-              <ul>
-                <li>How does the opioid crisis affect different demographic groups in your community?</li>
-                <li>What resources are available to address opioid overdoses in your area — and how accessible are they?</li>
-                <li>What would you recommend as action steps for healthcare systems, public health, and individual clinicians?</li>
-                <li>How did racial disparities in pain treatment create the unusual pattern of European Americans being disproportionately affected by the prescription-opioid crisis?</li>
-              </ul>
-            </aside>
-
+            
             <aside class="mid-read"
               data-fc-id="fc-ch13-informal-learning-pathways"
               data-fc-ch="13"
@@ -19889,98 +19382,7 @@
               </article>
             </div>
 
-            <div class="topic-group">
-              <h3 class="topic-group-head">Spotlight on Research — African American adults' path to coding expertise (Byrd, 2020)</h3>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">The question and design</h3>
-                </header>
-                <p>
-                  <strong>The investigator</strong>: Antonio Byrd (2020). <strong>The aim</strong>:
-                  to understand how racially marginalized adults' lives can be transformed through
-                  opportunities provided by computer coding bootcamps. Specifically: how does
-                  <em>digital literacy</em> lead to <em>coding literacy</em>, which leads to
-                  <em>procedural literacy</em>?
-                </p>
-                <p>
-                  <strong>Design</strong>: qualitative study using <strong>life history
-                  interviews</strong>. Byrd interviewed each participant on multiple occasions,
-                  focusing on digital literacy history and related lived experiences. Specifically
-                  examined how out-of-classroom experiences influenced and were influenced by the
-                  training experience.
-                </p>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Participants and program</h3>
-                </header>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>Who</h4>
-                    <p>7 adults aged 21-56, attending the Clearwater Academy (US Midwest) in spring 2017. Six were African American; one identified as "African and American" (born in Sudan).</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>The Academy</h4>
-                    <p>One service of a nonprofit organization addressing racism and poverty in the local community. The Academy educates low-income people of color in <strong>front-end web development (HTML, CSS, JavaScript)</strong> and soft skills.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>The program structure</h4>
-                    <p>Three and a half months long. Students must attend class on time <strong>four days a week, 8 hours a day</strong>. To support job market success: connected to professionals in the field, learn to write cover letters and résumés, present elevator pitches, practice mock job interviews.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Ethics</h4>
-                    <p>No ethical concerns — participants were appropriately informed about the study and consented.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Key findings — the tinkering and discovery pathway</h3>
-                </header>
-                <p>
-                  Byrd discovered that participants had <strong>little exposure to formal computer
-                  training during most of their lives</strong>. Yet they succeeded in the program.
-                  How? Through:
-                </p>
-                <ul>
-                  <li><strong>Tinkering with computers</strong> — taking things apart, trying things, seeing what worked</li>
-                  <li><strong>Trial-and-error learning</strong> — discovery by doing rather than formal instruction</li>
-                  <li><strong>Encouragement from local community</strong> — family, friends, key people who supported these activities</li>
-                  <li><strong>Tinkering in other domains too</strong> — these participants had built lifelong patterns of learning by doing across multiple domains, not just computers</li>
-                </ul>
-                <p>
-                  <strong>Critically, these were NOT formal school classrooms</strong>. Informal,
-                  community-based, self-directed learning was the path.
-                </p>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">What this means — challenging the deficit narrative</h3>
-                </header>
-                <p>
-                  Byrd's data <strong>refute the notion that African Americans lack interest in
-                  technology or have "technophobia."</strong> Rather, the digital literacy life
-                  histories showed that <em>tinkering and discovery</em> — both with computers and in
-                  other settings — may provide significant support for achieving coding literacy.
-                  When given the opportunity, these adults succeeded.
-                </p>
-                <p>
-                  <strong>The barrier was access, not capacity.</strong> The Clearwater Academy
-                  provided what mainstream education systems hadn't: structured opportunity, community
-                  support, and time and space to formalize informal learning that had already been
-                  happening throughout participants' lives.
-                </p>
-                <div class="finding-card">
-                  <h4>Implications for nursing practice and workforce development</h4>
-                  <p>(1) <strong>Recognize informal learning as legitimate</strong>: many patients and students have substantial knowledge from non-traditional sources. Don't equate "no formal training" with "no knowledge." (2) <strong>Health literacy</strong>: patients learn about their conditions through tinkering with information — websites, forums, family experience, trial-and-error. Engage with what they know. (3) <strong>Patient education that builds on existing knowledge</strong> is more effective than starting from scratch. Ask "what have you already learned about this?" before teaching. (4) <strong>Workforce diversification</strong>: nursing education pathways increasingly include accelerated programs, BSN bridge programs, and apprenticeship models that provide structured opportunity for people with non-traditional backgrounds. (5) <strong>Cultural humility about expertise</strong>: the family member who knows how to manage their grandmother's diabetes after years of helping has expertise; respect it. (6) <strong>Mark's relevance</strong>: midlife or near-midlife transitions into nursing — bringing prior knowledge from other domains — are common and valuable. The "tinkering and discovery" patterns from other parts of life transfer.</p>
-                </div>
-              </article>
-            </div>
-          </section>
+                      </section>
 
           <!-- TAB 4: 13.3 Personality -->
           <section id="ch13-personality" class="content-section">
@@ -21620,7 +21022,7 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>How did they measure it?</h4>
-                  <p>The Montessori method is based on <strong>self-paced learning and developmentally appropriate activities</strong>. Many techniques used in rehabilitation (task breakdown, guided repetition, simple-to-complex progression, concrete-to-abstract movement) and in dementia care (external cues, implicit memory use) are consistent with Montessori principles. Outcomes measured: <strong>positive engagement and emotions</strong> in persons with dementia, and <strong>family caregiver satisfaction</strong>.</p>
+                  <p>Originally developed for children, Maria Montessori's philosophy is adapted for adults with dementia by leveraging <strong>preserved cognitive functions</strong> (Skrajner &amp; Camp, 2007): <strong>self-paced learning and developmentally appropriate activities</strong>. Many techniques overlap with rehabilitation (task breakdown, guided repetition, simple-to-complex and concrete-to-abstract progression) and dementia care (external visual/auditory/tactile cues, engaging implicit/procedural memory that is often preserved when explicit memory fails). <strong>Sample activities</strong>: sorting tasks (silverware, fabrics, photos), matching, simple food preparation (washing produce, mixing batter), reading aloud, music, simple crafts — and the design is <em>person-centered</em>, connecting to the individual's history (a former gardener sorts seeds; a former tailor folds fabric), since personal meaning matters more than novelty. Outcomes measured: <strong>positive engagement and emotions</strong> in persons with dementia, and <strong>family caregiver satisfaction</strong>.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>Who participated &amp; what was the design?</h4>
@@ -21636,7 +21038,11 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>What did the investigators conclude?</h4>
-                  <p>The study added evidence for Montessori-based intervention effectiveness in dementia care. Most importantly, it demonstrated that <strong>family caregivers can successfully learn and deliver these techniques</strong>. This is significant because it expands the resource base for high-quality dementia care — families become active participants rather than helpless visitors, and trained family delivery can complement (rather than depend on) often-stretched professional staff.</p>
+                  <p>The study added evidence for Montessori-based intervention effectiveness in dementia care. Most importantly, it demonstrated that <strong>family caregivers can successfully learn and deliver these techniques</strong>. This is significant because it expands the resource base for high-quality dementia care — families become active participants rather than helpless visitors, and trained family delivery can complement (rather than depend on) often-stretched professional staff. <strong>What would strengthen it</strong>: testing whether relationship quality moderates outcomes (do estranged family members do as well as close ones?) and whether the intervention delays the need for higher-acuity placement.</p>
+                </div>
+                <div class="sr-qa-item">
+                  <h4>Why this matters — coaching family visits</h4>
+                  <p>Many families feel helpless or distressed visiting a loved one with dementia; brief training (15–30 minutes) on structured activities can transform visits from passive presence into active engagement. Provide <strong>activity menus</strong> matched to the resident's remaining abilities, take a <strong>person-centered approach</strong> by asking families about the resident's history, interests, and former occupation, and <strong>validate the difficulty</strong> — visiting is emotionally hard and family carers often feel grief and frustration. Recognize that family members know the resident in ways professional staff don't, so their participation often improves both care quality and family wellbeing. <strong>For Filipino families with elders in care</strong>: the strong tradition of family-as-caregiver can make nursing-home placement especially painful, and active engagement during visits helps families fulfill that cultural role within the constraints of institutional care.</p>
                 </div>
               </div>
             </aside>
@@ -21723,111 +21129,7 @@
             </aside>
             </div>
 
-            <div class="topic-group">
-              <h3 class="topic-group-head">Spotlight on Research — Montessori-based activities for nursing home residents with dementia (Mbakile-Mahlanza et al., 2020)</h3>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">The investigators and aim</h3>
-                </header>
-                <p>
-                  <strong>Lingani Mbakile-Mahlanza and colleagues (2020)</strong>. Montessori-based
-                  activities are <em>effective</em> with people with dementia and have been shown to
-                  <strong>improve agitation and enhance engagement</strong>. Problem: long-term care
-                  facility staff may not always be available to implement these activities
-                  consistently.
-                </p>
-                <p>
-                  <strong>The aim</strong>: evaluate whether <em>family members</em> can be trained
-                  to deliver Montessori activities when visiting loved ones with dementia in
-                  long-term care — potentially expanding access to this evidence-based intervention.
-                </p>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">The Montessori method adapted for dementia</h3>
-                </header>
-                <p>
-                  Originally developed for children, Maria Montessori's educational philosophy is
-                  adapted for adults with dementia by leveraging <strong>preserved cognitive
-                  functions</strong> (Skrajner &amp; Camp, 2007). Many techniques overlap with both
-                  rehabilitation and dementia intervention:
-                </p>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>From rehabilitation</h4>
-                    <p>Task breakdown (complex tasks divided into manageable steps), guided repetition, moving from simple to complex, moving from concrete to abstract.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>From dementia intervention</h4>
-                    <p>Use of <em>external cues</em> (visual, auditory, tactile prompts), engagement of <em>implicit memory</em> (procedural memory often preserved when explicit memory fails), self-paced learning, developmentally appropriate activities.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Sample activities</h4>
-                    <p>Sorting tasks (silverware, fabrics, photos), matching activities, simple food preparation (washing produce, mixing batter), reading aloud, music engagement, simple crafts. Choice of activity matches preserved skills and personal preferences.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Person-centered design</h4>
-                    <p>Activities should connect to the person's history — former gardener can sort seeds; former tailor can fold fabric. Personal meaning matters more than novelty.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Method and ethical considerations</h3>
-                </header>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>Participants</h4>
-                    <p>20 nursing home residents diagnosed with dementia, and 20 family care providers.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Crossover experimental design</h4>
-                    <p>One group received the Montessori intervention; the other served as control. Halfway through, groups switched — the original control became the intervention group, and vice versa. Strong internal control: each participant serves as their own comparison.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Informed consent ethics</h4>
-                    <p><strong>Critical issue with dementia research</strong>: people with significant cognitive impairment may not fully understand procedures. Protocol used: family care providers gave <em>written informed consent</em> on their own behalf and on behalf of the person with dementia. Persons with dementia were included only if they also <em>assented</em> (assent ≠ consent — agreeing to participate at the level they understand).</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Ongoing monitoring</h4>
-                    <p>Researchers carefully monitored participants' emotions. If a participant became agitated or frustrated, the session was stopped. This is standard ethical practice for vulnerable populations — assent can be withdrawn through behavior even when verbal withdrawal isn't possible.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Key findings and significance</h3>
-                </header>
-                <p>
-                  Compared with control conditions, the family-delivered Montessori intervention
-                  produced:
-                </p>
-                <ul>
-                  <li><strong>Significantly more positive engagement</strong> from persons with dementia</li>
-                  <li><strong>More positive emotions</strong> in persons with dementia</li>
-                  <li><strong>Higher satisfaction in family care providers</strong> — they felt more effective and connected during visits</li>
-                </ul>
-                <p>
-                  The investigators concluded that <em>family care providers can be successful in
-                  learning and implementing Montessori techniques</em>. This expands what families
-                  can do during visits — and may improve outcomes for both residents and visitors.
-                </p>
-                <p>
-                  <strong>What would strengthen these conclusions</strong>: whether relationship
-                  quality moderates outcomes (do estranged family members do as well as close ones?),
-                  whether the intervention delays need for higher-acuity placement.
-                </p>
-                <div class="finding-card">
-                  <h4>For nursing practice — family visit interventions</h4>
-                  <p>(1) <strong>Coach families on what to do during visits</strong>: many families feel helpless or distressed during visits with a loved one with dementia. Brief training (15-30 min) on structured activities can transform visits from passive presence to active engagement. (2) <strong>Activity menus</strong>: provide families with options matched to the resident's remaining abilities. (3) <strong>Person-centered approach</strong>: ask families about the resident's history, interests, former occupation. Build activities around that history. (4) <strong>Validate the difficulty</strong>: visiting a loved one with dementia is emotionally hard. Family caregivers often feel grief, frustration, helplessness. Acknowledge this. (5) <strong>Recognize family carer expertise</strong>: family members know the resident in ways professional staff don't. Their participation often improves quality of care AND family wellbeing. (6) <strong>For Filipino families with elders in care</strong>: tradition of family-as-caregiver may make nursing home placement particularly difficult. Active engagement during visits helps families fulfill cultural roles within the constraints of institutional care.</p>
-                </div>
-              </article>
-            </div>
-
+            
             <div class="topic-group">
               <h3 class="topic-group-head">Linking Research to Life — assessing adults with diminished capacity</h3>
 
@@ -23506,7 +22808,7 @@
               <div class="sr-qa">
                 <div class="sr-qa-item">
                   <h4>What was the aim?</h4>
-                  <p>Considerable research has examined disability in later life, but little has examined the role of <strong>race</strong> and how it intersects with other demographic factors. Kail and colleagues evaluated: (a) whether the association between chronic conditions and functional limitations varies by race/ethnicity, and (b) whether <strong>socioeconomic status</strong> accounts for any observed racial variation in this association.</p>
+                  <p>Considerable research has examined disability in later life, but little has examined the role of <strong>race</strong> and how it intersects with other demographic factors. Using the <strong>intersectionality framework</strong> (Ch 1), Kail and colleagues evaluated: (a) whether the association between chronic conditions and functional limitations varies by race/ethnicity, and (b) whether <strong>socioeconomic status</strong> accounts for any observed racial variation in this association. The disablement process runs chronic conditions → functional limitations → disability; the question is whether race amplifies the cascade.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>How did they measure it?</h4>
@@ -23518,7 +22820,7 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>What were the results?</h4>
-                  <p>Two key findings: (a) The <strong>positive association between chronic conditions and onset of functional limitations was LARGER for African Americans and Latino/a individuals than for European Americans</strong>. In other words, a given level of chronic-condition burden produces <em>more</em> functional disability for people of color. (b) This racial difference <strong>largely persisted regardless of SES</strong> — controlling for education, income, wealth, and insurance did NOT eliminate the gap.</p>
+                  <p>Two key findings: (a) The <strong>positive association between chronic conditions and onset of functional limitations was LARGER for African Americans and Latino/a individuals than for European Americans</strong>. In other words, a given level of chronic-condition burden produces <em>more</em> functional disability for people of color. (b) This racial difference <strong>largely persisted regardless of SES</strong> — even high-SES African American and Latino/a individuals showed more rapid functional-limitation onset from chronic conditions than high-SES European Americans; controlling for education, income, wealth, and insurance did NOT eliminate the gap.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What did the investigators conclude?</h4>
@@ -23528,22 +22830,14 @@
                   <h4>What would strengthen the conclusions?</h4>
                   <p>The study focused on race and SES; future research could examine other intersecting factors (gender, geographic region, language, immigration history). Mechanistic studies could clarify <em>how</em> chronic conditions translate to functional limitations differently across groups — including the role of allostatic load, healthcare quality, social support, and built environments.</p>
                 </div>
+                <div class="sr-qa-item">
+                  <h4>Why this matters — addressing the cascade in nursing practice</h4>
+                  <p>Don't treat chronic disease in isolation from <strong>disability prevention</strong> — build PT, OT, home modification, assistive devices, and exercise into chronic-disease management from the start, because every condition can cascade into functional limitations. Maintain <strong>heightened vigilance for patients of color</strong>, since the same disease burden may translate to more functional impact; don't wait until impairment is severe. Aggressively control upstream drivers (hypertension, diabetes, obesity, depression, sleep apnea). <strong>Counter implicit bias</strong>: clinicians may dismiss functional complaints from patients of color as "just aging," so take complaints seriously and use <strong>objective measures</strong> (gait speed, grip strength, timed up-and-go, ADL/IADL scales) that reduce bias. Recognize that many drivers operate outside the clinic (residential segregation, occupational and environmental exposures, healthcare access), warranting systemic advocacy. <strong>For Filipino patients</strong>: Asian American subgroups are often aggregated in research, so it's unknown how precisely the Kail findings apply to Filipino Americans — heightened individual attention to functional trajectory is appropriate given documented disparities.</p>
+                </div>
               </div>
             </aside>
 
-            <aside class="wdyt-card">
-              <p class="wdyt-label">What Do You Think? · Equity in Social Security &amp; Medicare</p>
-              <p class="wdyt-stem">
-                When <strong>Social Security passed in 1935</strong>, Southern politicians successfully exempted <strong>agricultural and domestic workers</strong> — making <strong>65% of Black workers ineligible</strong>. Those exemptions were removed in the 1950s, but they set the stage for continued disparities. Today, <strong>older Black and Latino/a individuals have less than half the wealth</strong> of typical older Whites (Jagannathan, 2021); <strong>over 35% of married older Blacks depend on Social Security</strong>. Medicare (1965) led to hospital desegregation but didn't eliminate disparities — older people of color have significantly lower rates of affording supplemental coverage for co-pays and out-of-pocket expenses, with worse overall health and less access to dental/vision/long-term care benefits. Reform proposals include: tax credits for adults caring for loved ones, raising the minimum Social Security benefit to 125% of poverty, universal access to retirement accounts, and lowering Medicare eligibility to age 60.
-              </p>
-              <ul>
-                <li>What disparities do you observe in your community among older adults from various racial and ethnic groups?</li>
-                <li>Do you agree or disagree with the various proposals to address wealth gaps among older adults? What tradeoffs do they involve?</li>
-                <li>The 1935 SS exemptions were lifted in the 1950s but their effects persist 70+ years later. What does this tell us about how policy decisions compound over generations?</li>
-                <li>How would universal access to retirement savings plans and lowering Medicare to age 60 change outcomes — and who would pay for them?</li>
-              </ul>
-            </aside>
-
+            
             <aside class="mid-read"
               data-fc-id="fc-ch15-race-disablement-cascade"
               data-fc-ch="15"
@@ -23613,106 +22907,7 @@
             </aside>
             </div>
 
-            <div class="topic-group">
-              <h3 class="topic-group-head">Spotlight on Research — race as moderator of the disablement process (Kail, Taylor, Rogers, 2020)</h3>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">The investigators and aim</h3>
-                </header>
-                <p>
-                  <strong>Ben Kail, Miles Taylor, and Nick Rogers (2020)</strong>. Although
-                  substantial research had examined disability in later life, little had examined
-                  the role of <em>race</em> as a modifier. Using the intersectionality framework
-                  (Ch 1), the investigators asked:
-                </p>
-                <ul>
-                  <li>Does the association between <strong>chronic conditions and functional limitations</strong> vary by race/ethnicity?</li>
-                  <li>Does <strong>socioeconomic status</strong> account for any observed racial variation in this association?</li>
-                </ul>
-                <p>
-                  This is the disablement process: chronic conditions → functional limitations →
-                  disability. The question is whether race amplifies the cascade.
-                </p>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Method — the University of Michigan HRS</h3>
-                </header>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>Data source</h4>
-                    <p><strong>Health and Retirement Study (HRS)</strong> — nationally representative sample of people over age 50, assessed every 2 years. Kail and colleagues analyzed data from 1994-2012 waves — 18 years of follow-up.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Functional limitations measure</h4>
-                    <p>Sum of 11 self-reported items: walking several blocks; sitting for 2 hours; pushing/pulling large objects; reaching arms up; stooping/kneeling/crouching; getting up from chair; climbing several flights of stairs; walking one block; lifting/carrying 10 lbs; picking a dime off the ground; climbing one flight of stairs. Time-varying — measured at each wave.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Chronic conditions measure</h4>
-                    <p>Sum of 7 diagnosed conditions reported by the participant. The exposure of interest.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>SES measures (5 time-invariant)</h4>
-                    <p>Years of education (capped 17), household income (log-transformed), household wealth (housing + non-housing minus debt), employer-provided insurance, market insurance. Allowed testing whether SES "explains away" racial differences.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Design and ethics</h3>
-                </header>
-                <p>
-                  Longitudinal study with assessments every 2 years. Statistical models tested for
-                  <em>multiplicative interactions</em> between race indicators and chronic conditions,
-                  examining whether the slope of "chronic conditions → functional limitations" differs
-                  by race.
-                </p>
-                <p>
-                  <strong>Ethics</strong>: each participant provides informed consent, renewed at each
-                  assessment. Because of the longitudinal design, the HRS must maintain contact
-                  information for each participant — but data are coded so researchers don't know
-                  participants' identities, preserving privacy across 18+ years.
-                </p>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Key findings — the multiplicative double disadvantage</h3>
-                </header>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>The interaction effect</h4>
-                    <p>The positive association between chronic conditions and functional limitations onset was <strong>larger for African Americans and Latino/a individuals than for European Americans</strong>. The <em>same number of chronic conditions translates into more functional limitations</em> for people of color.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>The SES non-explanation</h4>
-                    <p>Critically, this racial difference <strong>largely persisted regardless of SES</strong>. Even high-SES African Americans and Latino/a individuals showed more rapid functional limitation onset from chronic conditions than high-SES European Americans. Wealth, income, education, and insurance did not eliminate the gap.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>The "double disadvantage" framing</h4>
-                    <p>Compared to White counterparts, Blacks and Latino/a individuals experience a <strong>multiplicative double disadvantage</strong> in early stages of disablement: (a) more rapid onset and higher levels of functional limitations, AND (b) greater risk of functional limitation onset associated with chronic conditions.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>The policy implication</h4>
-                    <p>Economic policies alone are unlikely to reduce racial disparities in disablement. <strong>The mechanisms go beyond income</strong>: differential healthcare quality, weathering effects of chronic stress, racism-related health consequences, food environment, neighborhood factors, occupational exposures. Solutions must address these mechanisms directly.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">What this means clinically</h3>
-                </header>
-                <div class="finding-card">
-                  <h4>For nursing practice — addressing the cascade</h4>
-                  <p>(1) <strong>Don't treat chronic disease in isolation from disability prevention</strong>: every chronic condition has the potential to cascade into functional limitations. Build disability prevention (PT, OT, home modification, assistive devices, exercise) into chronic disease management from the start. (2) <strong>Heightened vigilance for patients of color</strong>: same disease may translate to more functional impact. Don't wait until impairment is severe to intervene. (3) <strong>Address the upstream drivers</strong>: high BP, diabetes, obesity, depression, sleep apnea all contribute to functional decline. Aggressive control reduces downstream disability. (4) <strong>Counter implicit bias in functional assessment</strong>: research suggests clinicians may dismiss functional complaints from patients of color or attribute them to "just aging." Take complaints seriously regardless of patient demographics. (5) <strong>Use objective functional measures</strong>: gait speed, grip strength, timed up-and-go, ADL/IADL scales. Objective data reduces bias influence. (6) <strong>Recognize structural factors</strong>: many drivers of disparate outcomes operate outside individual healthcare encounters (residential segregation, occupational exposures, environmental pollution, healthcare access). Advocate for systemic change. (7) <strong>For Filipino patients</strong>: Asian American subgroups are often aggregated in research; we don't know how the Kail findings apply specifically to Filipino Americans. Heightened individual attention to functional trajectory in Filipino patients with chronic conditions is appropriate given documented healthcare disparities.</p>
-                </div>
-              </article>
-            </div>
-
+            
             <div class="topic-group">
               <h3 class="topic-group-head">Diverse Perspectives — equity issues in Social Security and Medicare</h3>
 
@@ -23805,6 +23000,17 @@
                   <h4>For nursing practice — what equity awareness changes</h4>
                   <p>(1) <strong>Don't assume insurance coverage equals access</strong>: even patients with Medicare may not afford copays, supplemental coverage, transportation, or medications. Screen for financial barriers. (2) <strong>Connect to assistance programs</strong>: Medicare Savings Programs, Extra Help for Medicare Part D, state pharmaceutical assistance programs, Medicaid for dual-eligibles. Many patients qualify but don't know it. (3) <strong>Recognize benefits gaps</strong>: Medicare doesn't cover dental, vision, long-term care in most circumstances. These gaps disproportionately affect lower-income older adults — which disproportionately affects older adults of color. (4) <strong>Address the structural factors visible in your practice</strong>: track racial/ethnic disparities in outcomes for your patient population. Document, name, and address them institutionally. (5) <strong>Advocate</strong>: nursing organizations (ANA, AONL, GAPNA, specialty associations) advocate for healthcare and benefit policy. Member nurses' voices matter. (6) <strong>For Mark's career</strong>: working in geriatrics or community health means encountering these structural issues daily. Understanding the historical and contemporary roots positions you to be part of solutions, not just witnesses to disparities.</p>
                 </div>
+              </article>
+
+              <article class="condition-block">
+                <header class="condition-head">
+                  <h3 class="condition-name">What the textbook asks</h3>
+                </header>
+                <ul>
+                  <li>What disparities do you observe among older adults from different racial and ethnic groups in your community?</li>
+                  <li>Do you agree or disagree with the reform proposals (tax credits for caregivers, raising the minimum benefit to 125% of poverty, universal retirement accounts, <strong>lowering Medicare eligibility to age 60</strong>)? What tradeoffs do they involve, and who would pay?</li>
+                  <li>The 1935 exemptions were lifted in the 1950s but their effects persist 70+ years later. What does this reveal about how policy decisions <strong>compound across generations</strong>?</li>
+                </ul>
               </article>
             </div>
           </section>
@@ -24875,32 +24081,24 @@
                 </div>
                 <div class="sr-qa-item">
                   <h4>What were the results?</h4>
-                  <p>Four themes emerged: <em>grief anticipation and expression</em>, <em>impact of the bereavement</em>, <em>coping</em>, and <em>support systems</em>. <strong>Gendered coping patterns</strong>: <em>Mothers</em> coped through household work, caring for other children, and spiritual activities. <em>Fathers</em> coped through avoiding discussion of grief and through work/professional engagement — fathers resumed work after 5–20 days while mothers took 2–6 weeks to resume household chores. Most parents reported sleep, eating, and psychological disturbances for several weeks. Fathers also felt severe grief but did not express it openly. Some parents blamed the hospital, themselves, or family. Risk factors for severe and prolonged grief: <strong>unanticipated loss</strong>, <strong>limited family support</strong>, and <strong>financial strain</strong>. At 6–9 months: <strong>~60% of mothers with perinatal/child death and 80% of mothers with stillbirth still reported severe grief</strong>.</p>
+                  <p>Four themes emerged: <em>grief anticipation and expression</em>, <em>impact of the bereavement</em>, <em>coping</em>, and <em>support systems</em>. <strong>Gendered coping patterns</strong>: <em>Mothers</em> coped through household work, caring for other children, and spiritual activities. <em>Fathers</em> coped through avoiding discussion of grief and through work/professional engagement — fathers resumed work after 5–20 days while mothers took 2–6 weeks to resume household chores. Most parents reported sleep, eating, and psychological disturbances for several weeks. <em>Mothers</em> expressed grief openly (some fainted at the news), while <em>fathers</em> felt severe grief but did not express it openly, masking pain within cultural masculine norms. On the relationship itself, <strong>most parents reported no change or a positive change in their marriage</strong> — many drew closer through shared loss — though a few reported increased disharmony. Some parents blamed the hospital, themselves, or family. Risk factors for severe and prolonged grief: <strong>unanticipated loss</strong>, <strong>limited family support</strong>, and <strong>financial strain</strong>. At 6–9 months: <strong>~60% of mothers with perinatal/child death and 80% of mothers with stillbirth still reported severe grief</strong>.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What did the investigators conclude?</h4>
-                  <p>Stillbirth, perinatal death, and child death have <strong>lasting psychosomatic, social, and economic impacts</strong> on Northern Indian parents — impacts that are often <em>ignored</em> in clinical and policy contexts. Appropriate, broad-based support is needed. The study also illustrates how grief expression is shaped by gender and culture: fathers feel deep grief but express it differently, which can be misread as not grieving. Healthcare systems should provide ongoing bereavement support that recognizes gendered coping patterns and includes systems for follow-up months after the loss.</p>
+                  <p>Stillbirth, perinatal death, and child death have <strong>lasting psychosomatic, social, and economic impacts</strong> on Northern Indian parents — impacts that are often <em>ignored</em> in clinical and policy contexts. Appropriate, broad-based support is needed. The study also illustrates how grief expression is shaped by gender and culture: fathers feel deep grief but express it differently, which can be misread as not grieving. Healthcare systems should provide ongoing bereavement support that recognizes gendered coping patterns and includes follow-up months after the loss — specifically: recognizing that fathers grieve even when not visibly expressing it; targeted support for mothers during the 2–6 weeks before they resume household roles; integration of spiritual care (most mothers found this helpful); addressing the financial strain that intensifies grief duration; and family-level rather than purely individual support.</p>
                 </div>
                 <div class="sr-qa-item">
                   <h4>What would strengthen the conclusions?</h4>
                   <p>The sample was specific to Northern India; replication in other regions (South India, urban/rural contrasts) and other cultural contexts would test generalizability. Quantitative measurement at multiple time points would clarify the long-term trajectory. Studies that include LGBTQ+ parents and adoptive parents would expand the picture.</p>
                 </div>
+                <div class="sr-qa-item">
+                  <h4>Why this matters — caring for perinatal and pediatric loss</h4>
+                  <p>Don't equate "no expression" with "no grief" — fathers and male-identifying partners often grieve internally, and quiet doesn't mean recovered. Recognize <strong>gendered cultural scripts</strong> (returning to work quickly may be expected rather than pathological, though sustained avoidance over months can become problematic) and <strong>screen both parents long-term</strong>, since 6–9-month follow-up catches grief that has become prolonged and the standard 6-week postpartum visit isn't enough. Address <strong>self-blame</strong> directly, acknowledging feelings without confirming or contradicting them. Facilitate <strong>spiritual care</strong> (a major coping resource, especially for mothers) and connect families to help for the <strong>financial strain</strong> that compounds grief (hospital bills, lost income, funeral costs). Offer <strong>couple-level support</strong>, since the marriage is also grieving. <strong>Memory-making</strong> (footprints, photographs, naming the baby, keepsakes) is now standard perinatal-loss practice in many US hospitals, though some families hold different cultural views, so ask. <strong>For Filipino families specifically</strong>: stillbirth and infant death invoke specific Catholic practices — baptism of the dying infant when possible, blessing, and funeral arrangements following Filipino patterns — and the child is grieved as fully a person regardless of how briefly they lived. Finally, watch for <strong>prolonged grief</strong> when bereaved parents return to OB/GYN, primary care, or pediatric settings, as it can affect care for future pregnancies and surviving children.</p>
+                </div>
               </div>
             </aside>
 
-            <aside class="wdyt-card">
-              <p class="wdyt-label">What Do You Think? · The Pain of Virtual Goodbyes</p>
-              <p class="wdyt-stem">
-                During COVID-19, healthcare workers had to become the link between dying patients and their loved ones. With no visitors allowed, family had no direct communication with the dying — many goodbyes happened through a healthcare worker holding a phone, tablet, or computer at the bedside. Religious priests and ministers performed final rites virtually. US data show that <strong>COVID-19 death rates were 2.4× higher in Native American/Alaska Native and Latino/a populations and 2× higher in non-Latino/a African American populations</strong> than in European Americans (CDC, 2021). Healthcare disparities meant that even when families wanted to say goodbye virtually, the <strong>digital divide</strong> made it difficult — key loved ones often couldn't connect due to lack of broadband or appropriate devices. The Center to Advance Palliative Care (Icahn School of Medicine at Mount Sinai) created scripts to help healthcare workers facilitate these conversations.
-              </p>
-              <ul>
-                <li>What could have improved people's ability to say goodbye to loved ones during the pandemic — what systems were missing?</li>
-                <li>What are examples of specific healthcare disparities that affected families and friends of people who died from COVID-19?</li>
-                <li>How can we address racial/ethnic disparities so that they will not be barriers in the next pandemic?</li>
-                <li>How might religious and cultural traditions around death rituals (which often involve specific prayers, presence, or physical actions) be supported in future public-health emergencies that limit physical access?</li>
-              </ul>
-            </aside>
-
+            
             <aside class="mid-read"
               data-fc-id="fc-ch16-gendered-grief"
               data-fc-ch="16"
@@ -25051,6 +24249,18 @@
                   <h4>For nursing practice — equity-centered end-of-life care</h4>
                   <p>(1) <strong>Build virtual connection infrastructure NOW</strong>: don't wait for the next crisis. Hospitals should have ready-to-deploy tablets, video systems, scripts. (2) <strong>Address the digital divide proactively</strong>: ask families what tech they have access to; provide alternatives (loaner devices, simpler phone calls, in-person liaisons when possible). (3) <strong>Honor cultural practices</strong>: when in-person isn't possible, ask family what rituals they'd want to perform and how staff can facilitate (e.g., positioning the body for prayer, allowing specific words to be spoken, accommodating timing requests). (4) <strong>Train all staff in supportive scripting</strong>: bedside nurses, physicians, chaplains, social workers — all may need to facilitate these conversations. (5) <strong>Document the goodbye</strong>: many family members later wish they had a record. Recording a goodbye conversation (with consent) provides this. (6) <strong>For nurses providing this care</strong>: facilitating mediated goodbyes is emotionally costly. It requires deliberate support and debriefing. (7) <strong>Address the racial disparities directly</strong>: track outcomes by patient race and family experience. Don't accept "we tried our best" if outcomes are worse for some populations.</p>
                 </div>
+              </article>
+
+              <article class="condition-block">
+                <header class="condition-head">
+                  <h3 class="condition-name">What the textbook asks</h3>
+                </header>
+                <ul>
+                  <li>What could have improved people's ability to say goodbye during the pandemic — what systems were missing?</li>
+                  <li>What specific healthcare disparities affected the families and friends of those who died from COVID-19?</li>
+                  <li>How can we address racial and ethnic disparities so they aren't barriers in the next pandemic?</li>
+                  <li>How might religious and cultural <strong>death rituals</strong> — which often involve specific prayers, presence, or physical actions — be supported in future public-health emergencies that limit physical access?</li>
+                </ul>
               </article>
             </div>
 
@@ -25283,105 +24493,7 @@
             </aside>
             </div>
 
-            <div class="topic-group">
-              <h3 class="topic-group-head">Spotlight on Research — child death and stillbirth in Northern Indian parents (Das et al., 2021)</h3>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">The investigators and aim</h3>
-                </header>
-                <p>
-                  <strong>Das and colleagues (2021)</strong>. When parents experience the loss of a
-                  child, they must cope with two things: dealing with one of the worst imaginable
-                  events AND dealing with each other through it. Surprisingly, <strong>little
-                  research has examined how partners work through grief alone and together</strong>.
-                </p>
-                <p>
-                  The aim: document grief and coping experiences of <strong>Northern Indian
-                  parents</strong> following stillbirth, neonatal death, and child death — and
-                  understand sociocultural norms shaping these experiences.
-                </p>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Method — qualitative exploration</h3>
-                </header>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>Design</h4>
-                    <p><strong>Exploratory qualitative research design</strong>. Individual in-depth interviews with bereaved mothers and fathers <em>separately</em>. Open-ended questions exploring grief experience, interpersonal and family challenges, coping mechanisms, support systems, return to work/normalcy.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Participants</h4>
-                    <p>13 parents with child death (over age 1 month), 12 parents with neonatal death, 22 parents with stillbirth. Recruited from hospitals where the loss occurred. Plus community representatives: mothers, fathers, grandparents (with living young children), community leaders, health functionaries, religious leaders.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Quantitative measure</h4>
-                    <p><strong>Perinatal Grief Scale (PGS)</strong> documented mother's grief severity at 6-9 months post-loss. Allowed comparison with international benchmarks.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>Ethics</h4>
-                    <p>No ethical concerns — participants carefully screened, given detailed information about study nature, provided opportunity to stop participation at any time. Sensitive topic required careful handling throughout.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Key findings — four major themes</h3>
-                </header>
-                <div class="finding-grid">
-                  <div class="finding-card">
-                    <h4>1. Grief anticipation and expression</h4>
-                    <p>Both parents typically expressed disbelief, severe emotional pain, helplessness. <strong>Mothers expressed grief openly</strong> — some fainted at the news. <strong>Fathers felt severe grief but did not express it openly</strong> — masking pain within cultural masculine norms. Both grieved; the expressions differed substantially.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>2. Impact of bereavement</h4>
-                    <p>Self-guilt and blaming were common — blamed the hospital/healthcare providers, themselves, or family. Most parents reported NO or POSITIVE change in their marital relationship — many drew closer through shared loss. A few reported increased marital disharmony. <strong>Majority experienced sleep, eating, and psychological disturbances for several weeks.</strong></p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>3. Coping mechanisms — gendered patterns</h4>
-                    <p><strong>Mothers coped</strong> through engaging in household work, caring for other children, and spiritual activities. <strong>Fathers coped</strong> through avoiding discussion of their grief and through work/professional engagement. Fathers resumed work after 5-20 days; mothers took 2-6 weeks to resume household chores.</p>
-                  </div>
-                  <div class="finding-card">
-                    <h4>4. Sociocultural norms and practices</h4>
-                    <p>Cultural expectations shaped expression and timeline. Unanticipated loss, limited family support, and financial strain affected severity and duration. <strong>Nearly 60% of mothers with perinatal/child death and 80% with stillbirth reported severe grief at 6-9 months post-loss</strong> — significantly elevated rates compared to general grief patterns.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="condition-block">
-                <header class="condition-head">
-                  <h3 class="condition-name">Conclusions and significance</h3>
-                </header>
-                <p>
-                  The investigators concluded that <strong>stillbirth, perinatal, and child death
-                  have lasting psychosomatic, social, and economic impacts on Northern Indian
-                  parents — which are often ignored</strong>. Appropriate and broad-based
-                  interventions are needed to provide support, particularly through:
-                </p>
-                <ul>
-                  <li>Recognition that fathers grieve even when not visibly expressing it</li>
-                  <li>Targeted mother support during the 2-6 weeks before resuming household roles</li>
-                  <li>Spiritual care integration (most mothers found this helpful)</li>
-                  <li>Addressing financial strain that intensifies grief duration</li>
-                  <li>Family-level support, not just individual</li>
-                  <li>Long-term follow-up — 6-9 months still showing severe grief is significant</li>
-                </ul>
-                <p>
-                  <strong>What would strengthen these conclusions</strong>: the study included only
-                  Northern Indian couples. More diverse samples (Southern India, rural vs urban,
-                  different religious traditions, immigrant Indian communities, low- vs middle-
-                  income families) would help map cultural variation more precisely.
-                </p>
-                <div class="finding-card">
-                  <h4>For nursing practice — perinatal and pediatric loss</h4>
-                  <p>(1) <strong>Don't equate "no expression" with "no grief"</strong>: fathers and male-identifying partners often grieve internally. Quiet doesn't mean recovered. (2) <strong>Recognize gendered cultural scripts</strong>: in many cultures, men returning to work quickly is expected behavior, not pathological avoidance. But sustained avoidance over months can become problematic. (3) <strong>Screen both parents long-term</strong>: 6-9 month follow-up captures grief that has become prolonged. Standard 6-week postpartum visit isn't enough. (4) <strong>Address self-blame directly</strong>: parents commonly blame themselves, healthcare providers, or family. Acknowledge these feelings without confirming or contradicting; help parents move through them. (5) <strong>Spiritual care matters</strong>: especially for mothers, spiritual activities were major coping. Don't dismiss as "just religion" — facilitate connection. (6) <strong>Financial strain compounds grief</strong>: hospital bills from a baby who died, lost income during recovery, funeral costs all amplify suffering. Connect to financial counseling, hospital financial assistance, community resources. (7) <strong>Couple-level support</strong>: not just individual grief counseling — the marriage is also grieving. Couple-focused care reduces marital deterioration. (8) <strong>Memory making</strong>: footprints, photographs, naming the baby, keepsakes are now standard perinatal loss practice in many US hospitals. Some Asian families may have different cultural views — ask. (9) <strong>For Filipino families specifically</strong>: stillbirth and infant death invoke specific Catholic practices — baptism of the dying infant when possible, blessing, funeral arrangements following Filipino patterns. The deceased child is grieved as fully a person regardless of life duration. (10) <strong>Watch for prolonged grief in nursing practice</strong>: parents who return to OB/GYN, primary care, or pediatric settings after a loss may have ongoing grief affecting their care for future pregnancies and surviving children.</p>
-                </div>
-              </article>
-            </div>
-          </section>
+                      </section>
 
           <!-- KEY STUDIES & RESEARCHERS — chapter 16 -->
           <section id="ch16-studies" class="content-section">
@@ -26302,43 +25414,165 @@
          ============================================================ */
       var searchInput = document.getElementById('searchInput');
       var searchResults = document.getElementById('searchResults');
+      // ---- Content search (Batch: search upgrade) ----
+      // Searches every chapter's full text in the hidden chapter pool, not just
+      // titles. Each hit records its chapter, the section/tab it lives in, and a
+      // context snippet. Clicking a hit opens that chapter on the right tab and
+      // scrolls to the matched passage with a brief highlight.
+      var MAX_HITS_PER_CHAPTER = 4;   // keep the dropdown usable for common words
+      var MAX_TOTAL_HITS = 60;
+
+      function escHtml(str) {
+        return String(str).replace(/[&<>"]/g, function(c) {
+          return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c];
+        });
+      }
+      function escReg(str) { return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+      function sectionLabelFor(sectionEl, idx) {
+        try { return buildTabLabel(sectionEl, idx); } catch(e) { return 'Section'; }
+      }
+
       function performSearch(q) {
+        q = (q || '').trim();
         if (!q || q.length < 2) {
           searchResults.classList.remove('show');
           searchResults.innerHTML = '';
           return;
         }
-        var matches = [];
+        var ql = q.toLowerCase();
+        var pool = document.getElementById('chapterPool');
+        var titleMatches = [];
+        var contentHits = [];
+        var totalHits = 0;
+
+        // 1) Title matches first (chapter name contains the query)
         document.querySelectorAll('.sidebar-item').forEach(function(item) {
-          var name = item.querySelector('.item-name').textContent;
-          var num  = item.querySelector('.item-num').textContent;
+          var nameEl = item.querySelector('.item-name');
+          var numEl  = item.querySelector('.item-num');
+          if (!nameEl || !numEl) return;
+          var name = nameEl.textContent;
+          var num  = numEl.textContent;
           var id   = item.dataset.section;
-          if (name.toLowerCase().indexOf(q.toLowerCase()) !== -1) {
-            matches.push({ id: id, num: num, name: name, populated: item.classList.contains('populated') });
+          if (name.toLowerCase().indexOf(ql) !== -1) {
+            titleMatches.push({ id: id, num: num, name: name, populated: item.classList.contains('populated') });
           }
         });
-        if (!matches.length) {
-          searchResults.innerHTML = '<div class="search-empty">No matching chapters.</div>';
-        } else {
-          searchResults.innerHTML = matches.map(function(m) {
-            return '<a class="search-result-item" data-search-open="' + m.id + '">' +
-                   '<div class="search-result-chapter">Ch ' + m.num + (m.populated ? '' : ' · not yet built') + '</div>' +
-                   '<div class="search-result-snippet">' + m.name + '</div></a>';
-          }).join('');
-          searchResults.querySelectorAll('[data-search-open]').forEach(function(a) {
-            a.addEventListener('click', function() {
-              var id = a.dataset.searchOpen;
-              var item = document.querySelector('.sidebar-item[data-section="' + id + '"]');
-              if (item && item.classList.contains('populated')) {
-                openChapter(id);
-                searchInput.value = '';
-                performSearch('');
+
+        // 2) Content matches across the chapter pool
+        if (pool) {
+          var chapters = pool.querySelectorAll(':scope > section.chapter, :scope > .chapter');
+          chapters.forEach(function(chapter) {
+            if (totalHits >= MAX_TOTAL_HITS) return;
+            var chId = chapter.id;
+            var numEl = document.querySelector('.sidebar-item[data-section="' + chId + '"] .item-num');
+            var chNum = numEl ? numEl.textContent : (chId.replace('ch',''));
+            var sections = chapter.querySelectorAll(':scope > section[id]');
+            var perChapter = 0;
+            sections.forEach(function(section, i) {
+              if (perChapter >= MAX_HITS_PER_CHAPTER || totalHits >= MAX_TOTAL_HITS) return;
+              var text = section.textContent || '';
+              var lower = text.toLowerCase();
+              var pos = lower.indexOf(ql);
+              while (pos !== -1 && perChapter < MAX_HITS_PER_CHAPTER && totalHits < MAX_TOTAL_HITS) {
+                var start = Math.max(0, pos - 40);
+                var end = Math.min(text.length, pos + q.length + 60);
+                var snippet = (start > 0 ? '…' : '') +
+                              text.slice(start, pos) +
+                              '<mark>' + escHtml(text.slice(pos, pos + q.length)) + '</mark>' +
+                              text.slice(pos + q.length, end) +
+                              (end < text.length ? '…' : '');
+                // escape the non-mark parts safely: rebuild with escaping
+                var pre = escHtml(text.slice(start, pos));
+                var hit = escHtml(text.slice(pos, pos + q.length));
+                var post = escHtml(text.slice(pos + q.length, end));
+                snippet = (start > 0 ? '…' : '') + pre + '<mark>' + hit + '</mark>' + post + (end < text.length ? '…' : '');
+                contentHits.push({
+                  chId: chId, chNum: chNum, sectionId: section.id,
+                  sectionLabel: sectionLabelFor(section, i),
+                  snippet: snippet
+                });
+                perChapter++; totalHits++;
+                pos = lower.indexOf(ql, pos + q.length);
               }
             });
           });
         }
+
+        if (!titleMatches.length && !contentHits.length) {
+          searchResults.innerHTML = '<div class="search-empty">No matches found.</div>';
+          searchResults.classList.add('show');
+          return;
+        }
+
+        var html = '';
+        titleMatches.forEach(function(m) {
+          html += '<a class="search-result-item" data-open-ch="' + m.id + '">' +
+                  '<div class="search-result-chapter">Ch ' + m.num + ' · chapter title' + (m.populated ? '' : ' · not yet built') + '</div>' +
+                  '<div class="search-result-snippet">' + escHtml(m.name) + '</div></a>';
+        });
+        contentHits.forEach(function(h) {
+          html += '<a class="search-result-item" data-open-ch="' + h.chId + '" data-open-tab="' + h.sectionId + '" data-term="' + escHtml(q) + '">' +
+                  '<div class="search-result-chapter">Ch ' + h.chNum + ' · ' + escHtml(h.sectionLabel) + '</div>' +
+                  '<div class="search-result-snippet">' + h.snippet + '</div></a>';
+        });
+        searchResults.innerHTML = html;
+
+        searchResults.querySelectorAll('[data-open-ch]').forEach(function(a) {
+          a.addEventListener('click', function() {
+            var id = a.dataset.openCh;
+            var tab = a.dataset.openTab || null;
+            var term = a.dataset.term || '';
+            var item = document.querySelector('.sidebar-item[data-section="' + id + '"]');
+            if (item && item.classList.contains('populated')) {
+              openChapter(id, tab);
+              searchInput.value = '';
+              performSearch('');
+              if (term) setTimeout(function() { scrollToTerm(term); }, 120);
+            }
+          });
+        });
         searchResults.classList.add('show');
       }
+
+      // Scroll the open modal to the first occurrence of term and flash-highlight it.
+      function scrollToTerm(term) {
+        try {
+          var body = document.getElementById('modalBody');
+          if (!body || !term) return;
+          var active = body.querySelector('.tab-panel.active') || body;
+          var tl = term.toLowerCase();
+          var walker = document.createTreeWalker(active, NodeFilter.SHOW_TEXT, null);
+          var node;
+          while ((node = walker.nextNode())) {
+            var txt = node.nodeValue || '';
+            var idx = txt.toLowerCase().indexOf(tl);
+            if (idx !== -1) {
+              var range = document.createRange();
+              range.setStart(node, idx);
+              range.setEnd(node, idx + term.length);
+              var span = document.createElement('span');
+              span.className = 'search-flash';
+              try { range.surroundContents(span); } catch(e) {
+                // fallback: just scroll the parent element into view
+                if (node.parentElement) node.parentElement.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                return;
+              }
+              span.scrollIntoView({ block: 'center', behavior: 'smooth' });
+              setTimeout(function() {
+                // unwrap the flash span, leaving the text intact
+                var p = span.parentNode;
+                if (!p) return;
+                while (span.firstChild) p.insertBefore(span.firstChild, span);
+                p.removeChild(span);
+                p.normalize();
+              }, 2400);
+              return;
+            }
+          }
+        } catch(e) {}
+      }
+
       if (searchInput) {
         searchInput.addEventListener('input', function() { performSearch(searchInput.value); });
         searchInput.addEventListener('blur', function() {
@@ -26416,10 +25650,21 @@
           modalBody.appendChild(panel);
         });
 
-        var activeTabId = (initialTabId && modalBody.querySelector('#' + initialTabId)) ? initialTabId : firstId;
+        // Find a panel within the modal by id WITHOUT using querySelector('#id'),
+        // because the same id also exists in the hidden chapter pool (duplicate ids),
+        // which can make a scoped id lookup resolve to the wrong element.
+        function panelById(pid) {
+          var panels = modalBody.querySelectorAll('.tab-panel');
+          for (var i = 0; i < panels.length; i++) {
+            if (panels[i].id === pid) return panels[i];
+          }
+          return null;
+        }
+
+        var activeTabId = (initialTabId && panelById(initialTabId)) ? initialTabId : firstId;
         if (activeTabId) {
           var activeBtn   = modalTabs.querySelector('[data-tab-for="' + activeTabId + '"]');
-          var activePanel = modalBody.querySelector('#' + activeTabId);
+          var activePanel = panelById(activeTabId);
           if (activeBtn)   activeBtn.classList.add('active');
           if (activePanel) activePanel.classList.add('active');
         }
@@ -26430,7 +25675,7 @@
             modalTabs.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
             modalBody.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-            var panel = modalBody.querySelector('#' + targetId);
+            var panel = panelById(targetId);
             if (panel) panel.classList.add('active');
             modalBody.scrollTop = 0;
             // Update last-chapter to record current tab
